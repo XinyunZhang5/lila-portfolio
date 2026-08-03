@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Book themes. Every component reads these vars so day + night both work from
+   one set of markup. Night = Little Prince sky. Day = Lynn Fisher cream paper.
+--------------------------------------------------------------------------- */
+:root,
+[data-theme="night"] {
+  color-scheme: dark;
+  --paper: #101a34; /* backdrop base (the sky owns the real look) */
+  --ink: #f4ecd8; /* headlines / primary */
+  --ink-soft: #d3ddec; /* body copy */
+  --muted: #9fb0c8; /* captions / mono */
+  --accent: #e8c47c; /* gold */
+  --accent-strong: #f2cf7a;
+  --hair: rgba(255, 255, 255, 0.12); /* hairlines */
+  --card: #f4ecd8; /* polaroid paper */
+  --card-ink: #20304a;
+  --card-muted: #4a5a72;
+  --fold-back: #e7dfc8; /* underside of a turning page */
+  --fold-shadow: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="day"] {
+  color-scheme: light;
+  --paper: #e9e4d5; /* cream paper */
+  --ink: #211d15; /* ink */
+  --ink-soft: #423a2c;
+  --muted: #7a7160;
+  --accent: #9c5a24; /* warm rust / umber (the taxi-orange the user liked) */
+  --accent-strong: #7d4417;
+  --hair: rgba(33, 29, 21, 0.2);
+  --card: #f2ecda;
+  --card-ink: #211d15;
+  --card-muted: #6f6757;
+  --fold-back: #ddd7c6; /* same parchment tone, a touch darker (the page's back) */
+  --fold-shadow: rgba(58, 46, 26, 0.42);
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+.cursive {
+  font-family: "Cedarville Cursive", cursive;
+}
+.Welcome-text {
+  background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.4)
+    ),
+    linear-gradient(90.01deg, #e59cff 0.01%, #ba9cff 50.01%, #9cb2ff 100%);
+  background-blend-mode: normal, screen;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.Welcome-box {
+  isolation: isolate;
+  overflow: hidden;
+  align-items: center;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-radius: 32px;
+  box-shadow: inset 0 -7px 11px #a48fff1f;
+  display: flex;
+
+  position: relative;
+  width: -moz-max-content;
+  width: max-content;
+  transition: 0.45s cubic-bezier(0.6, 0.6, 0, 1) box-shadow;
+}
+
+.button-primary {
+  background: linear-gradient(
+      180deg,
+      rgba(60, 8, 126, 0) 0%,
+      rgba(60, 8, 126, 0.32) 100%
+    ),
+    rgba(113, 47, 255, 0.12);
+  box-shadow: inset 0 0 12px #bf97ff3d;
+}
+.button-primary:hover {
+  background: linear-gradient(
+      180deg,
+      rgba(60, 8, 126, 0) 0%,
+      rgba(60, 8, 126, 0.42) 100%
+    ),
+    rgba(113, 47, 255, 0.24);
+  box-shadow: inset 0 0 12px #bf97ff70;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}

@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Archive · Xinyun Zhang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=IBM+Plex+Mono:wght@400;500&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper:   #F7F6F3;
+    --surface: #FFFFFF;
+    --ink:     #0A0A0A;
+    --rule:    #E6E4E0;
+    --muted:   #8C8A85;
+    --spine:   #111111;
+    --mark:    #D9342B;
+
+    --panel-w: clamp(320px, 30%, 440px);
+
+    /* stack geometry — tuned against refs/01 */
+    --rotX: -13deg;
+    --rotY: -30deg;
+    --cover-w: 320px;
+    --z-step: 72px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- left panel ---------- */
+  .panel {
+    width: var(--panel-w);
+    flex: 0 0 var(--panel-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--rule);
+    padding: 52px 44px 40px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+  }
+  .wordmark {
+    font-family: Limelight, serif;
+    font-size: 40px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .tagline {
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 22px 0 0;
+    max-width: 30ch;
+  }
+  .divider { height: 1px; background: var(--rule); margin: 40px 0; }
+
+  .eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .persp { display: flex; flex-direction: column; gap: 10px; }
+  .persp button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 17px 18px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .persp button svg { width: 20px; height: 20px; flex: 0 0 20px; }
+  .persp button:hover { border-color: var(--ink); }
+  .persp button[aria-pressed="true"] {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  .foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .foot .dot {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--mark); color: #fff;
+    display: grid; place-items: center;
+    font-family: Limelight, serif; font-size: 11px; letter-spacing: 0;
+  }
+
+  /* ---------- right canvas ---------- */
+  .canvas {
+    position: relative;
+    flex: 1 1 auto;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--paper);
+    perspective: 2200px;
+    perspective-origin: 48% 42%;
+  }
+
+  .stack {
+    position: absolute;
+    /* anchor the front cover toward lower-left of the canvas */
+    left: 25%;
+    top: 60%;
+    width: 0; height: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rotX)) rotateY(var(--rotY));
+  }
+
+  .cover {
+    position: absolute;
+    left: calc(var(--cover-w) / -2);
+    top: calc(var(--cover-w) * 1.25 / -2);
+    width: var(--cover-w);
+    aspect-ratio: 4 / 5;
+    transform-style: preserve-3d;
+    transform: translate3d(0, 0, calc(var(--i) * (var(--z-step) * -1)));
+    transition: transform 520ms cubic-bezier(.22,.61,.36,1),
+                opacity 400ms ease, filter 400ms ease;
+    box-shadow: 0 18px 40px rgba(0,0,0,.16);
+    background: var(--accent, #ccc);
+    will-change: transform;
+  }
+  /* black spine on the left edge = the "thickness" of the book */
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; right: 100%;
+    width: 12px;
+    background: var(--spine);
+  }
+  .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cover { cursor: pointer; }
+  .cover:focus { outline: none; }
+  .cover.focused { outline: 3px solid var(--ink); outline-offset: 4px; }
+  /* selection: everyone else fades to a grey x-ray ghost */
+  .stack.has-selection .cover { filter: grayscale(1); opacity: .30; }
+  .stack.has-selection .cover.selected { filter: none; opacity: 1;
+    box-shadow: 0 44px 90px rgba(0,0,0,.34); }
+
+  /* detail panel, bottom-right */
+  .detail {
+    position: absolute; right: 60px; bottom: 72px;
+    max-width: 360px; padding-right: 26px;
+    text-align: right; border-right: 1px solid var(--ink);
+    opacity: 0; transform: translateY(12px); pointer-events: none;
+    transition: opacity .5s ease .2s, transform .5s ease .2s;
+  }
+  .detail.show { opacity: 1; transform: none; pointer-events: auto; }
+  .detail .d-date { font-family: Limelight, serif; font-size: 21px; letter-spacing: .06em; color: var(--ink); }
+  .detail .d-artist { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .detail .d-note { font-family: "IBM Plex Mono", monospace; font-size: 13px; line-height: 1.75; color: var(--ink); margin-top: 16px; }
+  .detail .d-link { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .04em;
+    color: var(--ink); text-decoration: none; margin-top: 18px; display: inline-block;
+    border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+  .detail .d-stack { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted);
+    letter-spacing: .04em; margin-top: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cover { transition: none !important; }
+    .detail { transition: none !important; }
+  }
+
+  /* placeholder face (until real cover art is dropped in) */
+  .cover .ph {
+    position: absolute; inset: 0;
+    border: 1px solid rgba(0,0,0,.28);
+    padding: 20px 18px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: rgba(0,0,0,.82);
+  }
+  .cover .ph .mh {
+    font-family: Limelight, serif;
+    font-size: 26px;
+    letter-spacing: 0.06em;
+    text-align: center;
+    margin-top: 6px;
+  }
+  .cover .ph .dt {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-align: center;
+    opacity: .75;
+  }
+</style>
+</head>
+<body>
+  <aside class="panel">
+    <div class="wordmark">LILA&nbsp;ZHANG</div>
+    <p class="tagline">A working archive of tools I wished existed, then built.</p>
+
+    <div class="divider"></div>
+
+    <div class="eyebrow">Select Perspective</div>
+    <div class="persp" role="group" aria-label="View mode">
+      <button data-view="globe" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>
+        Globe View
+      </button>
+      <button data-view="stacked" aria-pressed="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+        Stacked View
+      </button>
+      <button data-view="traditional" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Traditional View
+      </button>
+    </div>
+
+    <div class="foot">
+      <span class="dot">lz</span>
+      <span>© 2026 · Xinyun Zhang</span>
+    </div>
+  </aside>
+
+  <main class="canvas">
+    <div class="stack" id="stack"></div>
+    <div class="detail" id="detail" aria-live="polite"></div>
+  </main>
+
+<script>
+(async function () {
+  const stack = document.getElementById('stack');
+  const canvas = document.querySelector('.canvas');
+
+  // live-tunable geometry via URL query (?rotx=-16&roty=-30&ox=45&oy=48&z=44&cw=340&ax=26&ay=58)
+  const q = new URLSearchParams(location.search);
+  const root = document.documentElement.style;
+  if (q.has('rotx')) root.setProperty('--rotX', q.get('rotx') + 'deg');
+  if (q.has('roty')) root.setProperty('--rotY', q.get('roty') + 'deg');
+  if (q.has('z'))    root.setProperty('--z-step', q.get('z') + 'px');
+  if (q.has('cw'))   root.setProperty('--cover-w', q.get('cw') + 'px');
+  if (q.has('ox') && q.has('oy')) canvas.style.perspectiveOrigin = q.get('ox') + '% ' + q.get('oy') + '%';
+  if (q.has('ax')) stack.style.left = q.get('ax') + '%';
+  if (q.has('ay')) stack.style.top = q.get('ay') + '%';
+
+  const detail = document.getElementById('detail');
+  const Z_STEP = parseFloat(getComputedStyle(document.documentElement)
+                   .getPropertyValue('--z-step')) || 42;
+
+  let covers = [];
+  try {
+    covers = await (await fetch('/covers/covers.json')).json();
+  } catch (e) {
+    covers = [];
+  }
+
+  // optional filler cards, only for judging depth while tuning: ?pad=30
+  const PAD = parseInt(q.get('pad') || '0', 10);
+  const LIFT_PX = parseInt(q.get('lift') || '200', 10);
+  const items = covers.slice();
+  const palette = ['#C9CCD1','#D6D2CB','#BFC7CC','#D8C9BE','#C7CBBE','#D0C3C9'];
+  for (let k = 0; k < PAD; k++) {
+    items.push({ id: 'pad-' + k, placeholder: true,
+      accent: palette[k % palette.length], title_en: '', date: '' });
+  }
+
+  const N = items.length;
+  const els = [];
+
+  function placeholderFace(c) {
+    const ph = document.createElement('div');
+    ph.className = 'ph';
+    ph.innerHTML = '<div class="mh">' + (c.title_en || '') + '</div>' +
+                   '<div class="dt">' + (c.date || '') + '</div>';
+    return ph;
+  }
+
+  items.forEach((c, i) => {
+    const el = document.createElement('article');
+    el.className = 'cover';
+    el.tabIndex = 0;
+    el.setAttribute('aria-label', (c.title_en || c.id) + ' ' + (c.date || ''));
+    el.style.setProperty('--i', i);
+    el.style.setProperty('--accent', c.accent || '#ccc');
+    el.style.zIndex = String(N - i);
+
+    if (c.placeholder) {
+      el.style.boxShadow = '0 10px 24px rgba(0,0,0,' +
+        Math.max(0.04, 0.16 - i * 0.004).toFixed(3) + ')';
+      el.appendChild(placeholderFace(c));
+    } else {
+      // real composited cover; fall back to the placeholder face until it exists
+      const img = document.createElement('img');
+      img.src = '/covers/' + c.id + '.jpg';
+      img.alt = c.title_en || c.id;
+      img.loading = 'lazy';
+      img.addEventListener('error', () => { img.remove(); el.appendChild(placeholderFace(c)); });
+      el.appendChild(img);
+    }
+    stack.appendChild(el);
+    els.push(el);
+  });
+
+  // ---------------- state ----------------
+  let hovered = -1, selected = -1, focused = 0, keyboard = false;
+
+  function apply() {
+    els.forEach((el, i) => {
+      const base = i * -Z_STEP;
+      let x = 0, y = 0, z = base, turn = '';
+
+      if (selected >= 0) {
+        // the chosen issue stays at its own depth in the pile and is simply
+        // lifted out of it — no jumping to the front, no re-angling
+        if (i === selected) { y = -LIFT_PX; z = base + 34; }
+      } else if (hovered >= 0) {
+        if (i === hovered) { y = -64; z = base + 40; }   // lift it out of the stack
+        else if (i > hovered) { z = base - 70; }         // open a gap behind it
+      }
+
+      el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px)' + turn;
+      // true stacking order always: a lifted cover stays behind the ones in
+      // front of it, so their faded ghosts still veil its lower-left corner
+      el.style.zIndex = String(N - i);
+      el.classList.toggle('selected', i === selected);
+      el.classList.toggle('focused', keyboard && i === focused);
+    });
+    stack.classList.toggle('has-selection', selected >= 0);
+  }
+
+  function showDetail(i) {
+    if (i < 0 || !items[i] || items[i].placeholder) {
+      detail.classList.remove('show');
+      return;
+    }
+    const c = items[i];
+    detail.innerHTML =
+      '<div class="d-date">' + (c.date || '') + '</div>' +
+      '<div class="d-artist">Artist: ' + (c.artist || 'Unknown') + '</div>' +
+      '<div class="d-note">' + (c.note || '') + '</div>' +
+      (c.stack ? '<div class="d-stack">' + c.stack.join(' · ') + '</div>' : '') +
+      (c.link ? '<a class="d-link" href="' + c.link + '" target="_blank" rel="noreferrer noopener">VIEW PROJECT →</a>' : '');
+    detail.classList.add('show');
+  }
+
+  function coverAt(x, y) {
+    const el = document.elementFromPoint(x, y);
+    const cov = el && el.closest ? el.closest('.cover') : null;
+    return cov ? els.indexOf(cov) : -1;
+  }
+
+  // hover: elementFromPoint always returns the topmost cover, which is exactly
+  // the sliver the eye reads as "the one under the cursor"
+  canvas.addEventListener('mousemove', (e) => {
+    if (selected >= 0) return;
+    const idx = coverAt(e.clientX, e.clientY);
+    if (idx !== hovered) { hovered = idx; keyboard = false; apply(); }
+  });
+  canvas.addEventListener('mouseleave', () => {
+    if (hovered !== -1) { hovered = -1; apply(); }
+  });
+
+  canvas.addEventListener('click', (e) => {
+    if (e.target.closest && e.target.closest('.detail')) return;
+    const idx = coverAt(e.clientX, e.clientY);
+    if (idx < 0) { selected = -1; hovered = -1; }
+    else { selected = (selected === idx) ? -1 : idx; hovered = -1; focused = idx; }
+    apply(); showDetail(selected);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (selected >= 0) { selected = -1; apply(); showDetail(-1); }
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      keyboard = true;
+      focused = Math.max(0, Math.min(N - 1, focused + (e.key === 'ArrowRight' ? 1 : -1)));
+      if (selected < 0) hovered = focused;
+      els[focused].focus({ preventScroll: true });
+      apply();
+      e.preventDefault();
+    }
+    if (e.key === 'Enter') {
+      selected = (selected === focused) ? -1 : focused;
+      hovered = -1;
+      apply(); showDetail(selected);
+    }
+  });
+
+  // dev: force a state for screenshot review, e.g. ?hov=2 or ?sel=1
+  if (q.has('hov')) hovered = parseInt(q.get('hov'), 10);
+  if (q.has('sel')) { selected = parseInt(q.get('sel'), 10); showDetail(selected); }
+
+  apply();
+})();
+</script>
+</body>
+</html>

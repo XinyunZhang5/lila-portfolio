@@ -1,0 +1,103 @@
+[
+  {
+    "id": "Chatcurso",
+    "title": "Prompt Archive",
+    "title_en": "CHATCURSO",
+    "date": "FEB. 2025",
+    "issue": "No. 01",
+    "artist": "Lila Zhang",
+    "accent": "#5B8C5A",
+    "stack": [
+      "JavaScript",
+      "Chrome Extension"
+    ],
+    "link": "https://github.com/XinyunZhang5/Chatcurso",
+    "note": "A Chrome extension that quietly captures every prompt you send to ChatGPT and files them into a collapsible side panel, so you can search, revisit, and reuse the good ones. Fully local: no backend, no accounts, no network calls.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, muted sage green and cream limited color palette, a calm person at a tidy desk beside a small wooden filing drawer that quietly catches little paper notes floating down from the edge of a glowing computer screen, organized and serene, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  },
+  {
+    "id": "nebular-design",
+    "title": "Photo to LEGO",
+    "title_en": "NEBULAR",
+    "date": "MAR. 2025",
+    "issue": "No. 02",
+    "artist": "Lila Zhang",
+    "accent": "#F2B705",
+    "stack": [
+      "TypeScript",
+      "Python",
+      "AI"
+    ],
+    "link": "https://github.com/XinyunZhang5/nebular-design",
+    "note": "Upload a photo of a building, convert it to 3D, match it against real LEGO bricks, and generate step-by-step assembly instructions. A social layer lets people share what they build.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, bright yellow with brick red and blue limited color palette, a charming old building gently dissolving at its edges into floating lego bricks that drift upward and reassemble, faint blueprint construction lines, playful and whimsical, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  },
+  {
+    "id": "danceflux",
+    "title": "Dance Coaching",
+    "title_en": "REFRAME",
+    "date": "APR. 2025",
+    "issue": "No. 03",
+    "artist": "Lila Zhang",
+    "accent": "#2F9C95",
+    "stack": [
+      "Swift",
+      "Vision",
+      "on-device ML"
+    ],
+    "link": "https://github.com/XinyunZhang5/danceflux",
+    "note": "Compare your dance take against a reference video and get plain-language coaching on exactly what to fix. On-device pose estimation, audio alignment, and a phrase-bank coaching engine that degrades gracefully to an LLM fallback.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, cool teal and slate blue limited color palette, two dancers mid-motion, one a translucent glowing reference ghost outline overlaid slightly offset on a solid confident dancer, elegant motion lines and pose skeleton dots, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  },
+  {
+    "id": "chatslide",
+    "title": "RAG Pipeline",
+    "title_en": "CHATSLIDE",
+    "date": "AUG. 2025",
+    "issue": "No. 04",
+    "artist": "Lila Zhang",
+    "accent": "#7A5EA6",
+    "stack": [
+      "RAG",
+      "Celery",
+      "Redis"
+    ],
+    "link": "https://chatslide.ai",
+    "note": "A retrieval-augmented generation pipeline at ChatSlide.ai. Structure-aware recursive chunking lifted top-3 retrieval accuracy from 62% to 81%, and re-architecting blocking generation into a Celery + Redis async pipeline cut the failure rate by 35% and perceived latency from 12s to 7s.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, soft violet and cream limited color palette, a charming machine funnel that swallows a messy stack of documents and neatly outputs orderly presentation slides onto a conveyor belt, little gears and a magnifying lens picking the right paragraphs, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  },
+  {
+    "id": "whisper-helper",
+    "title": "Offline Voice Input",
+    "title_en": "WHISPER HELPER",
+    "date": "JUN. 2025",
+    "issue": "No. 05",
+    "artist": "Lila Zhang",
+    "accent": "#E8A13A",
+    "stack": [
+      "Lua",
+      "Whisper.cpp",
+      "Hammerspoon"
+    ],
+    "link": "https://github.com/XinyunZhang5/whisper-helper",
+    "note": "A free, fully offline voice-input companion for macOS. A floating mic button lets you speak and have it typed into Claude Code or any app. Powered by Whisper.cpp with OpenCC, Simplified Chinese by default and English too. Local-first: no cloud, no accounts.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, warm amber and cream limited color palette, a single small floating microphone hovering above a cozy wooden writing desk in warm lamplight, soft sound waves rippling out and turning into flowing chinese ink brush strokes, a laptop softly glowing, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  },
+  {
+    "id": "game-social",
+    "title": "Social Backend",
+    "title_en": "GAME SOCIAL",
+    "date": "DEC. 2024",
+    "issue": "No. 06",
+    "artist": "Lila Zhang",
+    "accent": "#E06C5A",
+    "stack": [
+      "PostgreSQL",
+      "WebSocket",
+      "feeds"
+    ],
+    "link": null,
+    "note": "Backend services for a gaming social platform. PostgreSQL models bidirectional friendships, requests, activity events, and personalized feeds. Moving from join-heavy reads to fanout-on-write dropped feed latency from 130ms to 90ms, and WebSocket chat and notifications deliver in under 200ms with reconnect recovery.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, warm coral and cream limited color palette, a friendly old-fashioned switchboard operator connecting many little game character avatars with glowing threads of friendship, small activity notes flying between them, lively and social, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  }
+]

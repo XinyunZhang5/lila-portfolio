@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2=".35" y2="1">
+      <stop offset="0" stop-color="#2f6fe6"/>
+      <stop offset=".55" stop-color="#1636c9"/>
+      <stop offset="1" stop-color="#0b1a86"/>
+    </linearGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <clipPath id="round"><rect width="64" height="64" rx="14"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="64" height="64" fill="url(#base)"/>
+    <g filter="url(#soft)">
+      <rect x="-6" y="15" width="30" height="30" rx="4" fill="#37e2ff" opacity=".7"/>
+      <rect x="40" y="4" width="30" height="46" rx="4" fill="#0a1ccb" opacity=".85"/>
+      <rect x="35" y="0" width="12" height="30" rx="3" fill="#7fb2ff" opacity=".55"/>
+      <rect x="17" y="25" width="42" height="16" rx="3" fill="#0716b0" opacity=".8"/>
+      <rect x="2" y="40" width="26" height="26" rx="4" fill="#f3aebb" opacity=".72"/>
+      <rect x="19" y="42" width="18" height="24" rx="3" fill="#e7c3f2" opacity=".6"/>
+      <rect x="30" y="42" width="16" height="24" rx="3" fill="#4b57ef" opacity=".68"/>
+      <rect x="45" y="45" width="20" height="20" rx="4" fill="#241246" opacity=".92"/>
+    </g>
+    <rect width="64" height="64" filter="url(#grain)" opacity=".4" style="mix-blend-mode:overlay"/>
+    <g fill="none" stroke="rgba(4,10,30,.28)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,1.4)">
+      <path d="M19 16 V48 H31"/><path d="M31 16 H47 L31 48 H47"/>
+    </g>
+    <g fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 16 V48 H31"/><path d="M31 16 H47 L31 48 H47"/>
+    </g>
+  </g>
+</svg>
