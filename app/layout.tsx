@@ -25,14 +25,14 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#101a34",
+  themeColor: "#e9e4d5",
 };
 
 export const metadata: Metadata = siteConfig;
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" data-theme="night">
+    <html lang="en" data-theme="day">
       <body
         className={cn(
           "overflow-hidden",

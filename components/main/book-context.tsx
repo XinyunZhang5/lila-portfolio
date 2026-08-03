@@ -44,7 +44,9 @@ export const useBook = () => {
 export const BookProvider = ({ children }: PropsWithChildren) => {
   const [page, setPage] = useState(0);
   const [dir, setDir] = useState<1 | -1>(1);
-  const [theme, setThemeState] = useState<Theme>("night");
+  // default to day (parchment) so a first-time visitor lands in light mode;
+  // a saved choice or ?theme= override still wins in the effect below
+  const [theme, setThemeState] = useState<Theme>("day");
 
   // restore theme + reflect it on <html> so the CSS vars switch. A URL like
   // ?chapter=2&theme=day deep-links straight into a page in a given mode.
