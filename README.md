@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <strong>Live → https://lila-portfolio.vercel.app</strong>
+  <strong>Live → https://lila-portfolio-pi.vercel.app</strong>
 </p>
 
 ---
