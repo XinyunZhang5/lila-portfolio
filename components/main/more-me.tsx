@@ -31,7 +31,7 @@ const VIGNETTES: Vignette[] = [
     href: "https://drive.google.com/file/d/1MJ5vkRHWPYPwbz6Wkj5ANnRy-c-MrGqu/view",
   },
   {
-    img: "/more-me/play-night.png",
+    img: "/more-me/play-v2.png",
     title: "Always moving",
     body: "When my head gets loud, I move — skateboarding, pickup basketball, and whatever wall I can climb next.",
     rotate: -1.5,
