@@ -187,7 +187,7 @@ export const PROJECTS = [
     link: "https://github.com/XinyunZhang5/whisper-helper",
   },
   {
-    title: "Reframe",
+    title: "Danceflux",
     description:
       "Compare your dance take against a reference video and get plain-language coaching tips on exactly what to fix. On-device pose estimation, audio alignment, and a phrase-bank coaching engine that degrades gracefully to an LLM fallback. Built with Swift and Vision.",
     image: "/projects/danceflux.png",
@@ -219,7 +219,7 @@ export const FOOTER_DATA = [
         link: "https://github.com/XinyunZhang5/whisper-helper",
       },
       {
-        name: "Reframe",
+        name: "Danceflux",
         icon: RxGithubLogo,
         link: "https://github.com/XinyunZhang5/danceflux",
       },

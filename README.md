@@ -5,7 +5,7 @@
 <p align="center">
   <img src="public/covers/Chatcurso.jpg" height="150" alt="Chatcurso" />
   <img src="public/covers/nebular-design.jpg" height="150" alt="Nebular" />
-  <img src="public/covers/danceflux.jpg" height="150" alt="Reframe" />
+  <img src="public/covers/danceflux.jpg" height="150" alt="Danceflux" />
   <img src="public/covers/chatslide.jpg" height="150" alt="ChatSlide" />
   <img src="public/covers/whisper-helper.jpg" height="150" alt="Whisper Helper" />
   <img src="public/covers/game-social.jpg" height="150" alt="Game Social" />
@@ -37,7 +37,7 @@ my own machine) — no stock art, no external image API.
 | --- | --- | --- |
 | I | [Chatcurso](https://github.com/XinyunZhang5/Chatcurso) | A Chrome extension that quietly files every ChatGPT prompt into a searchable side panel. Fully local. |
 | II | [Nebular](https://github.com/XinyunZhang5/nebular-design) | Turn a photo of a building into buildable LEGO with step-by-step instructions. |
-| III | [Reframe](https://github.com/XinyunZhang5/danceflux) | Compare your dance take against a reference and get plain-language coaching. On-device pose estimation. |
+| III | [Danceflux](https://github.com/XinyunZhang5/danceflux) | Compare your dance take against a reference and get plain-language coaching. On-device pose estimation. |
 | IV | [ChatSlide](https://chatslide.ai) | A RAG pipeline at ChatSlide.ai — structure-aware chunking lifted top-3 retrieval 62% → 81%. |
 | V | [Whisper Helper](https://github.com/XinyunZhang5/whisper-helper) | A free, fully offline voice-input companion for macOS, powered by Whisper.cpp. |
 | VI | Game Social | Backend for a gaming social platform — fanout-on-write feeds and sub-200ms WebSocket chat. |

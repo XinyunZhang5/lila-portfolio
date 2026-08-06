@@ -25,7 +25,7 @@ const VIGNETTES: Vignette[] = [
   {
     img: "/more-me/dance.png",
     title: "Dance",
-    body: "The reason Reframe exists. I wanted a coach for the beats I kept getting wrong.",
+    body: "The reason Danceflux exists. I wanted a coach for the beats I kept getting wrong.",
     rotate: 2.5,
     offset: "md:-mt-4",
     href: "https://drive.google.com/file/d/1MJ5vkRHWPYPwbz6Wkj5ANnRy-c-MrGqu/view",
