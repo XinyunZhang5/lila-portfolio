@@ -18,9 +18,12 @@
 ---
 
 Hi, I'm Lila — a software engineer and a maker studying Math + Computer Science at
-UIUC, currently building at Dexmate. This site is my portfolio built as a little
-book: it opens on a parchment page in the daylight, and you can turn it into a
-Little Prince night sky. You flip through it page by page.
+UIUC. Everything on the shelf started the same way: something annoyed me, I went
+looking for the tool, and it wasn't there. So I built it.
+
+This site is my portfolio built as a little book: it opens on a parchment page in
+the daylight, and you can turn it into a Little Prince night sky. You flip through
+it page by page.
 
 ## The book
 

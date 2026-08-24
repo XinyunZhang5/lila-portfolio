@@ -61,10 +61,13 @@ export const Prologue = () => {
             transition={{ ...rise.transition, delay: 0.08 }}
             className="mt-7 max-w-[58ch] text-[17px] leading-[1.85] text-[color:var(--ink-soft)] md:text-[19px]"
           >
-            A software engineer and a maker. I build the tools I wish existed,
-            from offline macOS utilities to a Rust auth platform, and I care
-            about how something feels as much as how it works. Math and Computer
-            Science at UIUC, currently building at Dexmate.
+            Software engineer and a maker, Math + Computer Science at UIUC.
+            Everything on this shelf started the same way: something annoyed me,
+            I went looking for the tool, and it wasn&apos;t there. So I built it.
+            An offline voice companion because I wanted to talk to my editor. A
+            prompt archive because I kept losing the good ones. A dance coach
+            because I can&apos;t see my own mistakes. I care about how something
+            feels as much as how it works.
           </motion.p>
 
           <motion.p
