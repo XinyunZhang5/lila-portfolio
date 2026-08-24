@@ -8,6 +8,7 @@ import { Cover } from "@/components/main/cover";
 import { MoreMe } from "@/components/main/more-me";
 import { ParchmentTexture } from "@/components/main/parchment";
 import { Prologue } from "@/components/main/prologue";
+import { COVERS, coverSrc } from "@/constants/covers";
 
 // A symmetric ~45deg dog-ear: the corner rolls diagonally up-and-in, so the
 // rolled tip sits clearly inside the page at (W - CX*vL, H - CY*vL). `vL` is how
@@ -372,6 +373,26 @@ export const Book = () => {
       if (raf.current) cancelAnimationFrame(raf.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Only the current page is mounted, so chapter II's covers would otherwise
+  // not start downloading until the moment you turn to them. Pull them into
+  // cache once the first page has settled — ~200KB total, fetched while the
+  // reader is still reading, so the archive paints in one piece.
+  useEffect(() => {
+    const warm = () =>
+      COVERS.forEach((c) => {
+        const img = new window.Image();
+        img.decoding = "async";
+        img.src = coverSrc(c.id);
+      });
+
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(warm, { timeout: 2500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(warm, 1200);
+    return () => window.clearTimeout(id);
   }, []);
 
   // ?peek=r|l pops the fold open on load (handy for previews)

@@ -1,42 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
-type Cover = {
-  id: string;
-  title: string;
-  title_en: string;
-  date: string;
-  issue: string;
-  artist: string;
-  accent: string;
-  stack?: string[];
-  link: string | null;
-  note: string;
-};
+import { COVERS, COVER_H, COVER_W, coverSrc } from "@/constants/covers";
 
 const Z_STEP = 72;
 const ROT_X = -13;
 const ROT_Y = -30;
 
 export const Archive = () => {
-  const [covers, setCovers] = useState<Cover[]>([]);
+  const covers = COVERS;
   const [hovered, setHovered] = useState(-1);
   const [selected, setSelected] = useState(-1);
-  const [coverW, setCoverW] = useState(480);
+  const [coverW, setCoverW] = useState(0);
 
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetch("/covers/covers.json")
-      .then((r) => r.json())
-      .then(setCovers)
-      .catch(() => setCovers([]));
-  }, []);
-
-  // keep the pile in proportion to whatever room the canvas actually has
-  useEffect(() => {
+  // keep the pile in proportion to whatever room the canvas actually has.
+  // Measuring before paint (rather than in a plain effect) means the pile is
+  // never briefly laid out at a guessed width and then snapped to the real one.
+  useLayoutEffect(() => {
     const fit = () => {
       const w = canvasRef.current?.clientWidth ?? 900;
       const h = canvasRef.current?.clientHeight ?? 700;
@@ -182,7 +173,6 @@ export const Archive = () => {
                   // is still behind the ones in front of it, so their faded
                   // ghosts keep veiling its lower-left corner
                   zIndex: covers.length - i,
-                  background: c.accent,
                   boxShadow:
                     i === selected
                       ? "0 44px 90px rgba(0,0,0,.55)"
@@ -199,11 +189,22 @@ export const Archive = () => {
                   aria-hidden
                   className="absolute bottom-0 top-0 right-full w-[12px] bg-[#111]"
                 />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`/covers/${c.id}.jpg`}
+                {/* Eager, never lazy: these sit inside a `perspective` +
+                    translate3d stack, where the browser's lazy-loading
+                    viewport test is unreliable and can stall a cover until
+                    something else on the page moves. The pre-built WebP is
+                    ~30KB, and the book pre-warms all six before you get here,
+                    so they are normally already in cache.
+                    `unoptimized` keeps the URL exactly as written, which is
+                    what makes that pre-warm hit. */}
+                <Image
+                  src={coverSrc(c.id)}
                   alt={`${c.title_en} — ${c.title}`}
-                  loading="lazy"
+                  width={COVER_W}
+                  height={COVER_H}
+                  sizes="320px"
+                  loading="eager"
+                  unoptimized
                   className="block h-full w-full object-cover"
                 />
               </article>
