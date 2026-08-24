@@ -56,18 +56,30 @@ export const Prologue = () => {
             Hi, I&apos;m Lila.
           </motion.h1>
 
+          {/* the kicker, set in mono like the rest of the editorial captions */}
           <motion.p
             {...rise}
-            transition={{ ...rise.transition, delay: 0.08 }}
+            transition={{ ...rise.transition, delay: 0.06 }}
+            className="mt-5 text-[13px] tracking-[0.08em] text-[color:var(--muted)]"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            Math + CS @ UIUC
+            <span aria-hidden className="mx-2.5 opacity-40">
+              |
+            </span>
+            Software Engineer &amp; Maker
+          </motion.p>
+
+          <motion.p
+            {...rise}
+            transition={{ ...rise.transition, delay: 0.1 }}
             className="mt-7 max-w-[58ch] text-[17px] leading-[1.85] text-[color:var(--ink-soft)] md:text-[19px]"
           >
-            Software engineer and a maker, Math + Computer Science at UIUC.
-            Everything on this shelf started the same way: something annoyed me,
-            I went looking for the tool, and it wasn&apos;t there. So I built it.
-            An offline voice companion because I wanted to talk to my editor. A
-            prompt archive because I kept losing the good ones. A dance coach
-            because I can&apos;t see my own mistakes. I care about how something
-            feels as much as how it works.
+            My philosophy? If it annoys me and I can&apos;t buy it, I build it.
+            Everything you see here is a product of that exact loophole. I sit
+            right at the intersection of rigorous logic and hands-on
+            making&mdash;meaning I&apos;m just as obsessed with the tactile
+            feedback of a device as I am with its functional architecture.
           </motion.p>
 
           <motion.p

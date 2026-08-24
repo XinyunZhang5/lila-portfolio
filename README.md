@@ -17,9 +17,9 @@
 
 ---
 
-Hi, I'm Lila — a software engineer and a maker studying Math + Computer Science at
-UIUC. Everything on the shelf started the same way: something annoyed me, I went
-looking for the tool, and it wasn't there. So I built it.
+Hi, I'm Lila — Math + CS @ UIUC, software engineer and maker. My philosophy? If it
+annoys me and I can't buy it, I build it. Everything on the shelf here is a product
+of that exact loophole.
 
 This site is my portfolio built as a little book: it opens on a parchment page in
 the daylight, and you can turn it into a Little Prince night sky. You flip through
@@ -29,7 +29,7 @@ it page by page.
 
 - **Chapter I — Prologue** · who I am, a headshot torn onto the page, and the tools I work with.
 - **Chapter II — The Archive** · a 3D shelf of "magazine issues," one painted cover per project. Hover to browse, click to open an issue.
-- **Chapter III — More Me** · the off-the-clock stuff — piano, dance, and the sports I keep coming back to.
+- **Chapter III — More Me** · what I do when nobody's assigning it — piano, dance, and whatever I'm teaching myself next.
 
 Every cover in the Archive was painted **locally** with FLUX.1-schnell (offline, on
 my own machine) — no stock art, no external image API.

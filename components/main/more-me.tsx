@@ -31,9 +31,9 @@ const VIGNETTES: Vignette[] = [
     href: "https://drive.google.com/file/d/1MJ5vkRHWPYPwbz6Wkj5ANnRy-c-MrGqu/view",
   },
   {
-    img: "/more-me/play-v2.png",
-    title: "Always moving",
-    body: "When my head gets loud, I move — skateboarding, pickup basketball, and whatever wall I can climb next.",
+    img: "/more-me/systems.png",
+    title: "Never not learning",
+    body: "Newest thing I can find, then the layer beneath it. Currently: systems design, and how large things stay standing.",
     rotate: -1.5,
     offset: "md:mt-16",
   },
@@ -66,8 +66,8 @@ export const MoreMe = () => {
         Off the clock.
       </h2>
       <p className="mt-6 max-w-[52ch] text-[17px] leading-[1.8] text-[color:var(--ink-soft)]">
-        The professional part is above. This is the rest of me, the small things
-        I keep coming back to.
+        The professional part is above. This is what I do when nobody&apos;s
+        assigning it.
       </p>
 
       <div className="mt-16 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
