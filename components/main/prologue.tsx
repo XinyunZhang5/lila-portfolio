@@ -75,11 +75,13 @@ export const Prologue = () => {
             transition={{ ...rise.transition, delay: 0.1 }}
             className="mt-7 max-w-[58ch] text-[17px] leading-[1.85] text-[color:var(--ink-soft)] md:text-[19px]"
           >
-            My philosophy? If it annoys me and I can&apos;t buy it, I build it.
-            Everything you see here is a product of that exact loophole. I sit
-            right at the intersection of rigorous logic and hands-on
-            making&mdash;meaning I&apos;m just as obsessed with the tactile
-            feedback of a device as I am with its functional architecture.
+            Most of what&apos;s here started with a small question: why
+            doesn&apos;t this exist yet? A beat I kept missing in dance class, a
+            tool I wished my laptop had, something that looked simple and turned
+            out not to be. I love that moment, so I keep chasing it. Math and CS
+            gave me the toolkit, building is how I keep learning, and the best
+            part is when someone else picks the thing up and it just works for
+            them.
           </motion.p>
 
           <motion.p
@@ -87,7 +89,8 @@ export const Prologue = () => {
             transition={{ ...rise.transition, delay: 0.14 }}
             className="mt-4 text-[15px] italic text-[color:var(--muted)]"
           >
-            This site is a little storybook. Turn the pages.
+            This site is a little storybook. Make yourself at home, and turn
+            the pages.
           </motion.p>
         </div>
 
