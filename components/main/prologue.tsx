@@ -53,7 +53,7 @@ export const Prologue = () => {
             className="max-w-[16ch] text-[44px] leading-[1.06] text-[color:var(--ink)] md:text-[68px]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Hi, I&apos;m Lila.
+            Hey there! I&apos;m Lila 👋
           </motion.h1>
 
           {/* the kicker, set in mono like the rest of the editorial captions */}
@@ -75,18 +75,31 @@ export const Prologue = () => {
             transition={{ ...rise.transition, delay: 0.1 }}
             className="mt-7 max-w-[58ch] text-[17px] leading-[1.85] text-[color:var(--ink-soft)] md:text-[19px]"
           >
-            Most of what&apos;s here started with a small question: why
-            doesn&apos;t this exist yet? A beat I kept missing in dance class, a
-            tool I wished my laptop had, something that looked simple and turned
-            out not to be. I love that moment, so I keep chasing it. Math and CS
-            gave me the toolkit, building is how I keep learning, and the best
-            part is when someone else picks the thing up and it just works for
-            them.
+            Aspiring SWE who brings clean logic, strong execution, and high
+            energy to every project. Currently hyper-focused on Infra,
+            Full-Stack, and AI Agent architecture.
           </motion.p>
 
           <motion.p
             {...rise}
             transition={{ ...rise.transition, delay: 0.14 }}
+            className="mt-4 max-w-[58ch] text-[17px] leading-[1.85] text-[color:var(--ink-soft)] md:text-[19px]"
+          >
+            Deeply passionate about scalable systems, seamless user experiences,
+            and continuous learning. Driven by logic, backed by code, and fueled
+            by good vibes.{" "}
+            <a
+              href="mailto:lilazh2026@gmail.com"
+              className="underline decoration-[color:var(--accent)] decoration-1 underline-offset-4 transition-colors hover:text-[color:var(--accent)]"
+            >
+              Drop me a line
+            </a>
+            &mdash;I&apos;d love to chat tech! &#128161;
+          </motion.p>
+
+          <motion.p
+            {...rise}
+            transition={{ ...rise.transition, delay: 0.18 }}
             className="mt-4 text-[15px] italic text-[color:var(--muted)]"
           >
             This site is a little storybook. Make yourself at home, and turn
