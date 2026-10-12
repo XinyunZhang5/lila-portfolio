@@ -5,39 +5,64 @@ import { RxHeart, RxHeartFilled } from "react-icons/rx";
 
 const KEY = "book-liked";
 
-// a like that lives in this browser only (there is no counter behind it):
-// the heart fills and stays filled on the next visit
+type Likes = { configured: boolean; count?: number; liked?: boolean };
+
+// One like per visitor, and it can't be taken back. The server counts and
+// de-duplicates (see app/api/likes); localStorage only remembers the filled
+// heart so it shows instantly on the next visit.
 export const LikeButton = () => {
   const [liked, setLiked] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
     try {
-      setLiked(localStorage.getItem(KEY) === "1");
+      if (localStorage.getItem(KEY) === "1") setLiked(true);
     } catch {
       /* ignore private-mode storage errors */
     }
+    fetch("/api/likes")
+      .then((r) => r.json())
+      .then((d: Likes) => {
+        if (!d.configured) return;
+        setCount(d.count ?? 0);
+        if (d.liked) setLiked(true);
+      })
+      .catch(() => {
+        /* no count is fine: the heart still works */
+      });
   }, []);
 
-  const toggle = () =>
-    setLiked((cur) => {
-      try {
-        localStorage.setItem(KEY, cur ? "0" : "1");
-      } catch {
-        /* ignore private-mode storage errors */
-      }
-      return !cur;
-    });
+  const like = () => {
+    if (liked) return;
+    setLiked(true);
+    setCount((c) => (c === null ? c : c + 1));
+    try {
+      localStorage.setItem(KEY, "1");
+    } catch {
+      /* ignore private-mode storage errors */
+    }
+    fetch("/api/likes", { method: "POST" })
+      .then((r) => r.json())
+      .then((d: Likes) => {
+        if (d.configured) setCount(d.count ?? 0);
+      })
+      .catch(() => {
+        /* keep the optimistic count */
+      });
+  };
 
   const Icon = liked ? RxHeartFilled : RxHeart;
 
   return (
     <div className="group relative flex">
       <button
-        onClick={toggle}
+        onClick={like}
         aria-pressed={liked}
-        aria-label={liked ? "Unlike" : "Leave a like"}
+        aria-label={liked ? "Liked" : "Leave a like"}
         className={`transition-colors hover:text-[color:var(--accent)] ${
-          liked ? "text-[color:var(--accent)]" : "text-[color:var(--muted)]"
+          liked
+            ? "cursor-default text-[color:var(--accent)]"
+            : "text-[color:var(--muted)]"
         }`}
       >
         <Icon className="h-[22px] w-[22px] transition-transform duration-200 group-hover:scale-110" />
@@ -51,6 +76,15 @@ export const LikeButton = () => {
         {liked
           ? "Thank you! That genuinely made my day~"
           : "Leave a like to cheer on my job hunt. It’s been a long road~"}
+        {count !== null && (
+          <span
+            className="ml-2 inline-flex items-center gap-1 whitespace-nowrap align-baseline font-semibold text-[color:var(--card-ink)]"
+            aria-label={`${count} likes`}
+          >
+            <RxHeartFilled className="h-[11px] w-[11px]" aria-hidden />
+            {count}
+          </span>
+        )}
       </div>
     </div>
   );
