@@ -1,16 +1,21 @@
 import { createHash } from "crypto";
 import { NextResponse } from "next/server";
+import { createClient } from "redis";
 
-// Anonymous like counter. Likes live in one Redis set (Upstash, reached over
-// its REST API so there is no client library to ship). Each member is a salted
+// Anonymous like counter. Likes live in one Redis set. Each member is a salted
 // hash of the visitor's IP + browser, so one visitor counts once and nothing
 // that identifies them is ever stored.
+// The store is whichever one the project has connected: REDIS_URL (Vercel's
+// Redis integration, spoken over TCP) or an Upstash REST endpoint.
 export const dynamic = "force-dynamic";
 
 const URL_ = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
 const TOKEN =
   process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+const REDIS_URL = process.env.REDIS_URL;
 const SET = "likes";
+const SALT = REDIS_URL ?? TOKEN;
+const configured = Boolean(REDIS_URL || (URL_ && TOKEN));
 
 const visitor = (req: Request) => {
   const ip =
@@ -18,10 +23,28 @@ const visitor = (req: Request) => {
     req.headers.get("x-real-ip") ||
     "unknown";
   const ua = req.headers.get("user-agent") ?? "";
-  return createHash("sha256").update(`${TOKEN}|${ip}|${ua}`).digest("hex");
+  return createHash("sha256").update(`${SALT}|${ip}|${ua}`).digest("hex");
 };
 
-const redis = async (commands: (string | number)[][]) => {
+// one connection per warm serverless instance, reused across requests
+let client: ReturnType<typeof createClient> | null = null;
+const tcp = async () => {
+  if (!client) {
+    client = createClient({ url: REDIS_URL });
+    client.on("error", () => {
+      /* surfaced by the failing command instead */
+    });
+  }
+  if (!client.isOpen) await client.connect();
+  return client;
+};
+
+const redis = async (commands: string[][]): Promise<number[]> => {
+  if (REDIS_URL) {
+    const c = await tcp();
+    const out = await Promise.all(commands.map((cmd) => c.sendCommand(cmd)));
+    return out.map(Number);
+  }
   const res = await fetch(`${URL_}/pipeline`, {
     method: "POST",
     headers: { Authorization: `Bearer ${TOKEN}` },
@@ -40,7 +63,7 @@ const redis = async (commands: (string | number)[][]) => {
 const unconfigured = () => NextResponse.json({ configured: false });
 
 export async function GET(req: Request) {
-  if (!URL_ || !TOKEN) return unconfigured();
+  if (!configured) return unconfigured();
   try {
     const [count, liked] = await redis([
       ["SCARD", SET],
@@ -53,7 +76,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  if (!URL_ || !TOKEN) return unconfigured();
+  if (!configured) return unconfigured();
   try {
     // SADD is a no-op for a member already in the set: that is the "once"
     const [, count] = await redis([
