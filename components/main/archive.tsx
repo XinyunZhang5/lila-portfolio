@@ -16,6 +16,7 @@ import { COVERS, COVER_H, COVER_W, coverSrc } from "@/constants/covers";
 const Z_STEP = 72;
 const ROT_X = -13;
 const ROT_Y = -30;
+const SLIDE_STEP = 38; // px of finger travel per issue when sliding on touch
 
 export const Archive = () => {
   const covers = COVERS;
@@ -25,6 +26,11 @@ export const Archive = () => {
 
   const canvasRef = useRef<HTMLDivElement>(null);
   const belowRef = useRef<HTMLDivElement>(null);
+  // touch browsing: where the finger went down, and which issue was up then
+  const slide = useRef<{ x: number; from: number; moved: boolean } | null>(
+    null,
+  );
+  const justSlid = useRef(false);
 
   // keep the pile in proportion to whatever room the canvas actually has.
   // Measuring before paint (rather than in a plain effect) means the pile is
@@ -175,7 +181,7 @@ export const Archive = () => {
             {String(covers.length).padStart(2, "0")} ISSUES · 2024-2026
             <br />
             <span className="opacity-70">
-              Tap or click a cover to open its issue.
+              Hover or slide to browse, tap to open an issue.
             </span>
           </p>
         </div>
@@ -187,7 +193,42 @@ export const Archive = () => {
       <div
         ref={canvasRef}
         className="relative min-h-[70vh] flex-1 overflow-hidden lg:min-h-full"
-        style={{ perspective: "2200px", perspectiveOrigin: "48% 42%" }}
+        style={{
+          perspective: "2200px",
+          perspectiveOrigin: "48% 42%",
+          // vertical swipes still scroll the page; sideways ones are ours
+          touchAction: "pan-y",
+        }}
+        // Touch has no hover, so hold and slide sideways instead: every
+        // SLIDE_STEP px of travel lifts the next issue along the pile, the
+        // same lift a mouse gets by hovering. A plain tap still opens one.
+        onPointerDown={(e) => {
+          if (e.pointerType === "mouse") return;
+          const under = coverAt(e.clientX, e.clientY);
+          const from = under >= 0 ? under : Math.max(hovered, selected, 0);
+          slide.current = { x: e.clientX, from, moved: false };
+          justSlid.current = false;
+        }}
+        onPointerMove={(e) => {
+          const s = slide.current;
+          if (!s || e.pointerType === "mouse") return;
+          const dx = e.clientX - s.x;
+          if (!s.moved && Math.abs(dx) < 10) return;
+          s.moved = true;
+          justSlid.current = true;
+          const i = Math.max(
+            0,
+            Math.min(covers.length - 1, s.from + Math.round(dx / SLIDE_STEP)),
+          );
+          if (selected >= 0) setSelected(-1);
+          if (i !== hovered) setHovered(i);
+        }}
+        onPointerUp={() => {
+          slide.current = null;
+        }}
+        onPointerCancel={() => {
+          slide.current = null;
+        }}
         onMouseMove={(e) => {
           if (selected >= 0) return;
           const i = coverAt(e.clientX, e.clientY);
@@ -195,6 +236,11 @@ export const Archive = () => {
         }}
         onMouseLeave={() => setHovered(-1)}
         onClick={(e) => {
+          // the click that ends a slide is not a tap: leave the issue lifted
+          if (justSlid.current) {
+            justSlid.current = false;
+            return;
+          }
           if ((e.target as HTMLElement).closest("[data-detail]")) return;
           const i = coverAt(e.clientX, e.clientY);
           setSelected((prev) => (i < 0 || prev === i ? -1 : i));

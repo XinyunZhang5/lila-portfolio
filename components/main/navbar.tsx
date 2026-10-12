@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { PAGES, useBook } from "@/components/main/book-context";
+import { LikeButton } from "@/components/main/like-button";
 import { ThemeToggle } from "@/components/main/theme-toggle";
 import { SOCIALS } from "@/constants";
 
@@ -147,7 +148,10 @@ export const Navbar = () => {
               </Link>
             ))}
           </div>
-          <ThemeToggle variant="bare" />
+          <div className="flex items-center gap-5">
+            <ThemeToggle variant="bare" />
+            <LikeButton />
+          </div>
           <span
             className="text-[11px] tracking-[0.22em] text-[color:var(--muted)]"
             style={{ fontFamily: "var(--font-mono)" }}
