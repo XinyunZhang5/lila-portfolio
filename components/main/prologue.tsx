@@ -53,7 +53,7 @@ export const Prologue = () => {
             className="max-w-[16ch] text-[44px] leading-[1.06] text-[color:var(--ink)] md:text-[68px]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Hey there! I&apos;m Lila 👋
+            Hey there! I&apos;m Lila
           </motion.h1>
 
           {/* the kicker, set in mono like the rest of the editorial captions */}

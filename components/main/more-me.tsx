@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 type Vignette = {
@@ -9,7 +10,21 @@ type Vignette = {
   body: string;
   rotate: number;
   offset: string;
-  href?: string; // when set, the card links out (opens in a new tab)
+  href?: string; // when set, the card links to its /watch page
+};
+
+// start pulling a clip (and its first-frame poster) the moment a card is
+// hovered or touched, so /watch has a head start by the time it opens
+const warmed = new Map<string, HTMLVideoElement>();
+const warm = (href: string) => {
+  const slug = href.split("/").pop();
+  if (!slug || warmed.has(slug)) return;
+  new window.Image().src = `/videos/${slug}-poster.jpg`;
+  const v = document.createElement("video");
+  v.preload = "auto";
+  v.muted = true;
+  v.src = `/videos/${slug}.mp4`;
+  warmed.set(slug, v);
 };
 
 // grounded, real interests. Add / edit these with your own once you like the shape.
@@ -20,7 +35,7 @@ const VIGNETTES: Vignette[] = [
     body: "I play when I need to think in a different language. Mostly late, mostly for myself.",
     rotate: -3,
     offset: "md:mt-10",
-    href: "https://drive.google.com/file/d/1U6a3EgCgX0MF9NLgLYkaxK1R0A9Uy14e/view?usp=sharing",
+    href: "/watch/piano",
   },
   {
     img: "/more-me/dance.png",
@@ -28,7 +43,7 @@ const VIGNETTES: Vignette[] = [
     body: "The reason Danceflux exists. I wanted a coach for the beats I kept getting wrong.",
     rotate: 2.5,
     offset: "md:-mt-4",
-    href: "https://drive.google.com/file/d/1MJ5vkRHWPYPwbz6Wkj5ANnRy-c-MrGqu/view",
+    href: "/watch/dance",
   },
   {
     img: "/more-me/systems.png",
@@ -125,15 +140,15 @@ export const MoreMe = () => {
               className={`group ${v.offset} rounded-[2px] bg-[color:var(--card)] p-3 pb-4 shadow-[0_22px_50px_rgba(0,0,0,0.35)] transition-transform duration-500 hover:!rotate-0`}
             >
               {v.href ? (
-                <a
+                <Link
                   href={v.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={`${v.title} — watch on Google Drive (opens in a new tab)`}
+                  onPointerEnter={() => warm(v.href!)}
+                  onFocus={() => warm(v.href!)}
+                  aria-label={`${v.title} — watch the video`}
                   className="block cursor-pointer"
                 >
                   {body}
-                </a>
+                </Link>
               ) : (
                 body
               )}

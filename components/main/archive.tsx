@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -23,6 +24,7 @@ export const Archive = () => {
   const [coverW, setCoverW] = useState(0);
 
   const canvasRef = useRef<HTMLDivElement>(null);
+  const belowRef = useRef<HTMLDivElement>(null);
 
   // keep the pile in proportion to whatever room the canvas actually has.
   // Measuring before paint (rather than in a plain effect) means the pile is
@@ -54,6 +56,83 @@ export const Archive = () => {
 
   const shown = selected >= 0 ? covers[selected] : null;
 
+  // stacked layout: the write-up sits under the pile, so bring it into view
+  useEffect(() => {
+    if (selected < 0 || !belowRef.current?.offsetParent) return;
+    belowRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selected]);
+
+  // The write-up lives in the page flow (beside the pile on wide screens,
+  // under it on narrow ones) and never floats over the covers, so no cover
+  // art can ever run behind the text.
+  const detail = shown && (
+    <motion.div
+      key={shown.id}
+      data-detail
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      className="border-l border-[color:var(--accent)] pl-5"
+    >
+      <div
+        className="text-[12px] text-[color:var(--muted)]"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        {shown.issue} · {shown.date}
+      </div>
+      <h3
+        className="mt-2 text-[26px] leading-[1.1] tracking-[0.03em] text-[color:var(--ink)]"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {shown.title_en}
+      </h3>
+      <div className="mt-1.5 text-[13px] italic text-[color:var(--ink-soft)]">
+        {shown.title}
+      </div>
+      <p
+        className="mt-5 text-[13px] leading-[1.75] text-[color:var(--ink-soft)]"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        {shown.note}
+      </p>
+      {shown.stack && (
+        <div
+          className="mt-4 text-[11px] leading-[1.7] tracking-[0.04em] text-[color:var(--muted)]"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          {shown.stack.join(" · ")}
+        </div>
+      )}
+      <div
+        className="mt-3 text-[11px] text-[color:var(--muted)]"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        Artist: {shown.artist}
+      </div>
+      <div
+        className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-[11px] uppercase tracking-[0.1em]"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        {shown.link && (
+          <Link
+            href={shown.link}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="border border-[color:var(--accent)] px-4 py-2 text-[color:var(--accent-strong)] transition-colors hover:text-[color:var(--ink)]"
+          >
+            View project →
+          </Link>
+        )}
+        <button
+          onClick={() => setSelected(-1)}
+          className="uppercase tracking-[0.1em] text-[color:var(--muted)] transition-colors hover:text-[color:var(--ink)]"
+        >
+          Close
+        </button>
+      </div>
+    </motion.div>
+  );
+
   return (
     <section
       id="projects"
@@ -80,33 +159,28 @@ export const Archive = () => {
           The Archive
         </h2>
 
-        <p className="mt-6 max-w-[32ch] text-[17px] italic leading-relaxed text-[color:var(--ink-soft)]">
-          A shelf of things I wished existed, then built. Every cover was
-          painted for its own story.
-        </p>
+        {/* the shelf's own blurb; on wide screens an open issue takes its place */}
+        <div className={shown ? "lg:hidden" : ""}>
+          <p className="mt-6 max-w-[32ch] text-[17px] italic leading-relaxed text-[color:var(--ink-soft)]">
+            A shelf of things I wished existed, then built. Every cover was
+            painted for its own story.
+          </p>
 
-        <div className="my-10 h-px w-full bg-[color:var(--hair)]" />
+          <div className="my-10 h-px w-full bg-[color:var(--hair)]" />
 
-        <p
-          className="text-[12px] leading-relaxed text-[color:var(--muted)]"
-          style={{ fontFamily: "var(--font-mono)" }}
-        >
-          {String(covers.length).padStart(2, "0")} ISSUES · 2024-2026
-          <br />
-          <span className="opacity-70">
-            Hover to browse, click to open an issue.
-          </span>
-        </p>
-
-        {selected >= 0 && (
-          <button
-            onClick={() => setSelected(-1)}
-            className="mt-8 w-fit border border-[color:var(--accent)] px-4 py-2 text-[11px] uppercase tracking-[0.1em] text-[color:var(--accent-strong)] transition-colors hover:text-[color:var(--ink)]"
+          <p
+            className="text-[12px] leading-relaxed text-[color:var(--muted)]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            Close issue (Esc)
-          </button>
-        )}
+            {String(covers.length).padStart(2, "0")} ISSUES · 2024-2026
+            <br />
+            <span className="opacity-70">
+              Tap or click a cover to open its issue.
+            </span>
+          </p>
+        </div>
+
+        <div className="mt-8 hidden lg:block">{detail}</div>
       </aside>
 
       {/* ---------- right canvas ---------- */}
@@ -211,61 +285,14 @@ export const Archive = () => {
             );
           })}
         </div>
-
-        {/* ---------- detail panel ---------- */}
-        <div
-          data-detail
-          className="pointer-events-none absolute bottom-[22%] right-[6%] max-w-[360px] border-r border-[color:var(--accent)] pr-6 text-right transition-all duration-500"
-          style={{
-            opacity: shown ? 1 : 0,
-            transform: shown ? "none" : "translateY(12px)",
-            transitionDelay: shown ? "200ms" : "0ms",
-            pointerEvents: shown ? "auto" : "none",
-          }}
-        >
-          {shown && (
-            <>
-              <div
-                className="text-[21px] tracking-[0.06em] text-[color:var(--ink)]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {shown.date}
-              </div>
-              <div
-                className="mt-2 text-[12px] text-[color:var(--muted)]"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                {shown.issue} · Artist: {shown.artist}
-              </div>
-              <p
-                className="mt-4 text-[13px] leading-[1.75] text-[color:var(--ink-soft)]"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                {shown.note}
-              </p>
-              {shown.stack && (
-                <div
-                  className="mt-4 text-[11px] tracking-[0.04em] text-[color:var(--muted)]"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  {shown.stack.join(" · ")}
-                </div>
-              )}
-              {shown.link && (
-                <Link
-                  href={shown.link}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="mt-5 inline-block border-b border-[color:var(--accent)] pb-0.5 text-[12px] tracking-[0.04em] text-[color:var(--accent-strong)] hover:text-[color:var(--ink)]"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
-                  VIEW PROJECT →
-                </Link>
-              )}
-            </>
-          )}
-        </div>
       </div>
+
+      {/* ---------- write-up, stacked layout ---------- */}
+      {shown && (
+        <div ref={belowRef} className="px-8 pb-28 pt-2 lg:hidden">
+          {detail}
+        </div>
+      )}
     </section>
   );
 };

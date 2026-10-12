@@ -12,9 +12,8 @@ import type { PropsWithChildren } from "react";
 
 export type Theme = "night" | "day";
 
-/** page 0 = cover / table of contents, 1..3 = the three chapters */
+/** the three chapters; the side rail is their table of contents */
 export const PAGES = [
-  { key: "cover", label: "Contents", roman: "" },
   { key: "home", label: "Home", roman: "I" },
   { key: "projects", label: "Projects", roman: "II" },
   { key: "more", label: "More Me", roman: "III" },
@@ -49,7 +48,8 @@ export const BookProvider = ({ children }: PropsWithChildren) => {
   const [theme, setThemeState] = useState<Theme>("day");
 
   // restore theme + reflect it on <html> so the CSS vars switch. A URL like
-  // ?chapter=2&theme=day deep-links straight into a page in a given mode.
+  // ?chapter=2&theme=day deep-links straight into a page in a given mode
+  // (chapters are 1-based in the URL, pages 0-based here).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlTheme = params.get("theme");
@@ -59,8 +59,8 @@ export const BookProvider = ({ children }: PropsWithChildren) => {
     if (urlTheme === "day" || urlTheme === "night") setThemeState(urlTheme);
     else if (saved === "day" || saved === "night") setThemeState(saved);
 
-    if (Number.isFinite(urlChapter) && urlChapter >= 1 && urlChapter <= LAST_PAGE)
-      setPage(urlChapter);
+    if (Number.isFinite(urlChapter) && urlChapter >= 1 && urlChapter <= PAGES.length)
+      setPage(urlChapter - 1);
   }, []);
 
   useEffect(() => {

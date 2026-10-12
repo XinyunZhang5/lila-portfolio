@@ -1,129 +1,139 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { PAGES, useBook } from "@/components/main/book-context";
 import { ThemeToggle } from "@/components/main/theme-toggle";
 import { SOCIALS } from "@/constants";
 
-const CHAPTERS = PAGES.slice(1); // Home / Projects / More Me
-
 export const Navbar = () => {
   const { page, go } = useBook();
+  const pathname = usePathname();
+  const router = useRouter();
+  // only matters below md, where the rail is a drawer tucked off the left edge
   const [open, setOpen] = useState(false);
 
+  const onBook = pathname === "/";
+
+  // the book only lives on "/", so from any other route (e.g. /watch) a
+  // chapter pick has to navigate home as well as flip to that page
+  const pick = (p: number) => {
+    go(p);
+    setOpen(false);
+    if (!onBook) router.push("/");
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
-    <header
-      className="fixed top-0 z-50 h-[64px] w-full border-b px-6 backdrop-blur-md md:px-10"
-      style={{
-        borderColor: "var(--hair)",
-        backgroundColor: "color-mix(in srgb, var(--paper) 72%, transparent)",
-      }}
-    >
-      <nav className="mx-auto flex h-full max-w-[1400px] items-center justify-between">
-        {/* wordmark → back to the contents page */}
+    <>
+      {/* phone: tapping anywhere off the open drawer puts it away */}
+      {open && (
+        <div
+          aria-hidden
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-40 bg-black/25 md:hidden"
+        />
+      )}
+
+      {/* the table of contents, pinned down the left of every page. On a phone
+          it slides off-screen and leaves only its tab showing. */}
+      <aside
+        className={`fixed left-0 top-0 z-50 flex h-full w-[240px] flex-col border-r border-[color:var(--hair)] bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] px-7 py-10 backdrop-blur-md transition-transform duration-300 ease-out md:translate-x-0 md:bg-[color-mix(in_srgb,var(--paper)_72%,transparent)] ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* the tab: rides the drawer's edge, so it is the handle both ways */}
         <button
-          onClick={() => go(0)}
-          className="group flex items-baseline gap-2"
-          aria-label="Table of contents"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Close contents" : "Open contents"}
+          aria-expanded={open}
+          className="absolute left-full top-1/2 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-md border border-l-0 border-[color:var(--hair)] bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] text-[color:var(--accent)] backdrop-blur-md md:hidden"
         >
-          <span
-            className="text-[19px] text-[color:var(--ink)]"
-            style={{ fontFamily: "var(--font-display)" }}
+          <svg
+            width="8"
+            height="14"
+            viewBox="0 0 8 14"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
           >
-            Lila Zhang
-          </span>
-          <span className="hidden text-[11px] tracking-[0.2em] text-[color:var(--accent)] sm:inline">
-            ✦
-          </span>
+            <path d="M1 1l6 6-6 6" />
+          </svg>
         </button>
 
-        {/* chapter links */}
-        <div className="hidden items-center gap-9 md:flex">
-          {CHAPTERS.map((c, i) => {
-            const p = i + 1;
-            const activeChapter = page === p;
+        <button
+          onClick={() => pick(0)}
+          className="text-left text-[40px] leading-[0.92] text-[color:var(--ink)]"
+          style={{ fontFamily: "var(--font-display)" }}
+          aria-label="Lila Zhang, back to Home"
+        >
+          Lila
+          <br />
+          Zhang
+        </button>
+        <p
+          className="mt-4 text-[12px] italic tracking-[0.02em] text-[color:var(--muted)]"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          Software Engineer &amp; Maker
+        </p>
+
+        <nav className="mt-12 flex flex-col gap-1">
+          {PAGES.map((row, p) => {
+            const active = onBook && page === p;
             return (
               <button
-                key={c.key}
-                onClick={() => go(p)}
-                className="text-[14px] transition-colors"
-                style={{
-                  color: activeChapter
-                    ? "var(--accent)"
-                    : "var(--ink-soft)",
-                }}
+                key={row.key}
+                onClick={() => pick(p)}
+                aria-current={active ? "page" : undefined}
+                className="group flex items-baseline gap-3 py-2 text-left"
               >
-                {c.label}
+                <span
+                  className={`text-[16px] uppercase tracking-[0.06em] transition-colors ${
+                    active
+                      ? "text-[color:var(--accent)]"
+                      : "text-[color:var(--ink)] group-hover:text-[color:var(--accent)]"
+                  }`}
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {row.label}
+                </span>
+                <span
+                  aria-hidden
+                  className="mb-[5px] flex-1 self-end border-b border-dotted border-[color:var(--muted)] opacity-60 transition-opacity group-hover:opacity-100"
+                />
+                <span
+                  className={`text-[14px] tracking-[0.1em] transition-colors ${
+                    active
+                      ? "text-[color:var(--accent)]"
+                      : "text-[color:var(--muted)] group-hover:text-[color:var(--accent)]"
+                  }`}
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {row.roman}
+                </span>
               </button>
             );
           })}
-          <span
-            className="h-4 w-px"
-            style={{ backgroundColor: "var(--hair)" }}
-          />
-          {SOCIALS.map(({ link, name, icon: Icon }) => (
-            <Link
-              key={name}
-              href={link}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={name}
-              className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"
-            >
-              <Icon className="h-[18px] w-[18px]" />
-            </Link>
-          ))}
-          <ThemeToggle />
-        </div>
+        </nav>
 
-        {/* mobile controls */}
-        <div className="flex items-center gap-3 md:hidden">
-          <ThemeToggle />
-          <button
-            className="text-2xl text-[color:var(--ink)]"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Menu"
-          >
-            {open ? "×" : "☰"}
-          </button>
-        </div>
-      </nav>
-
-      {open && (
-        <div
-          className="absolute left-0 top-[64px] flex w-full flex-col items-center gap-5 border-b py-6 backdrop-blur-md md:hidden"
-          style={{
-            borderColor: "var(--hair)",
-            backgroundColor: "color-mix(in srgb, var(--paper) 94%, transparent)",
-          }}
-        >
-          <button
-            onClick={() => {
-              go(0);
-              setOpen(false);
-            }}
-            className="text-[15px] text-[color:var(--ink-soft)]"
-          >
-            Contents
-          </button>
-          {CHAPTERS.map((c, i) => (
-            <button
-              key={c.key}
-              onClick={() => {
-                go(i + 1);
-                setOpen(false);
-              }}
-              className="text-[15px]"
-              style={{
-                color: page === i + 1 ? "var(--accent)" : "var(--ink-soft)",
-              }}
-            >
-              {c.label}
-            </button>
-          ))}
-          <div className="mt-2 flex gap-6">
+        {/* colophon */}
+        <div className="mt-auto flex flex-col items-start gap-5">
+          <div className="flex items-center gap-5">
             {SOCIALS.map(({ link, name, icon: Icon }) => (
               <Link
                 key={name}
@@ -131,14 +141,22 @@ export const Navbar = () => {
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label={name}
-                className="text-[color:var(--muted)]"
+                className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"
               >
-                <Icon className="h-6 w-6" />
+                <Icon className="h-[18px] w-[18px]" />
               </Link>
             ))}
           </div>
+          <ThemeToggle variant="bare" />
+          <span
+            className="text-[11px] tracking-[0.22em] text-[color:var(--muted)]"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            v.&nbsp;<span className="text-[color:var(--ink-soft)]">I</span>
+            &nbsp;&middot;&nbsp;MMXXVI
+          </span>
         </div>
-      )}
-    </header>
+      </aside>
+    </>
   );
 };

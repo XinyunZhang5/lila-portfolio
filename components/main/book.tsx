@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 
 import { Archive } from "@/components/main/archive";
 import { LAST_PAGE, useBook } from "@/components/main/book-context";
-import { Cover } from "@/components/main/cover";
 import { MoreMe } from "@/components/main/more-me";
 import { ParchmentTexture } from "@/components/main/parchment";
 import { Prologue } from "@/components/main/prologue";
@@ -28,17 +27,35 @@ type Phase = "idle" | "hover" | "drag" | "anim";
 function pageNode(i: number) {
   switch (i) {
     case 0:
-      return <Cover />;
-    case 1:
       return <Prologue />;
-    case 2:
+    case 1:
       return <Archive />;
-    case 3:
+    case 2:
       return <MoreMe />;
     default:
       return null;
   }
 }
+
+// no hover on a touch screen, so the grab corners get a quiet standing mark
+const CornerHint = ({ side }: { side: Side }) => (
+  <svg
+    width="12"
+    height="20"
+    viewBox="0 0 8 14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className={`pointer-events-none absolute bottom-5 text-[color:var(--accent)] opacity-70 [@media(hover:hover)]:hidden ${
+      side === "r" ? "right-5" : "left-5 rotate-180"
+    }`}
+  >
+    <path d="M1 1l6 6-6 6" />
+  </svg>
+);
 
 export const Book = () => {
   const { page, theme, next, prev } = useBook();
@@ -405,10 +422,16 @@ export const Book = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cornerStyle = { width: `${100 / 7}%`, height: `${100 / 6}%` };
+  const cornerStyle = {
+    width: `max(${100 / 7}%, 72px)`,
+    height: `max(${100 / 6}%, 96px)`,
+  };
 
   return (
-    <main ref={stageRef} className="fixed inset-0 overflow-hidden">
+    <main
+      ref={stageRef}
+      className="fixed inset-0 overflow-hidden md:left-[240px]"
+    >
       {/* current page — always transparent, so pressing the corner changes
           nothing but the corner itself. The next chapter is never mounted here
           until a turn completes, so it can't peek through the lifted corner. */}
@@ -449,7 +472,9 @@ export const Book = () => {
             if (phaseRef.current === "hover") goIdle(true);
           }}
           onPointerDown={(e) => onGrabDown("r", e)}
-        />
+        >
+          <CornerHint side="r" />
+        </div>
       )}
       {canPrev && (
         <div
@@ -463,7 +488,9 @@ export const Book = () => {
             if (phaseRef.current === "hover") goIdle(true);
           }}
           onPointerDown={(e) => onGrabDown("l", e)}
-        />
+        >
+          <CornerHint side="l" />
+        </div>
       )}
     </main>
   );
