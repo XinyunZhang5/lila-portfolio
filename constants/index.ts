@@ -180,11 +180,11 @@ export const FULLSTACK_SKILL = [
 
 export const PROJECTS = [
   {
-    title: "Whisper Helper",
+    title: "mini-ci",
     description:
-      "A free, fully-offline voice-input companion for macOS — a floating mic button that lets you speak and have it typed into Claude Code or any app. Powered by Whisper.cpp with OpenCC: Simplified Chinese by default, English too. Local-first: no cloud, no accounts.",
-    image: "/projects/shuoba.png",
-    link: "https://github.com/XinyunZhang5/whisper-helper",
+      "A Kubernetes-native CI/CD system built from scratch: a PipelineRun custom resource, a stateless operator, and a DAG scheduler that runs each pipeline step as its own Pod, independent steps in parallel.",
+    image: "/covers/mini-ci.jpg",
+    link: "https://github.com/XinyunZhang5/mini-ci",
   },
   {
     title: "Danceflux",
@@ -214,9 +214,9 @@ export const FOOTER_DATA = [
     title: "Projects",
     data: [
       {
-        name: "Whisper Helper",
+        name: "mini-ci",
         icon: RxGithubLogo,
-        link: "https://github.com/XinyunZhang5/whisper-helper",
+        link: "https://github.com/XinyunZhang5/mini-ci",
       },
       {
         name: "Danceflux",

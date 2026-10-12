@@ -67,21 +67,21 @@
     "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, soft violet and cream limited color palette, a charming machine funnel that swallows a messy stack of documents and neatly outputs orderly presentation slides onto a conveyor belt, little gears and a magnifying lens picking the right paragraphs, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty space, absolutely no text, no letters, no words, no title, no logo, no signature"
   },
   {
-    "id": "whisper-helper",
-    "title": "Offline Voice Input",
-    "title_en": "WHISPER HELPER",
-    "date": "JUN. 2025",
+    "id": "mini-ci",
+    "title": "Kubernetes CI/CD",
+    "title_en": "MINI-CI",
+    "date": "OCT. 2026",
     "issue": "No. 05",
     "artist": "Lila Zhang",
-    "accent": "#E8A13A",
+    "accent": "#2F5C94",
     "stack": [
-      "Lua",
-      "Whisper.cpp",
-      "Hammerspoon"
+      "Python",
+      "Kubernetes",
+      "kopf"
     ],
-    "link": "https://github.com/XinyunZhang5/whisper-helper",
-    "note": "A free, fully offline voice-input companion for macOS. A floating mic button lets you speak and have it typed into Claude Code or any app. Powered by Whisper.cpp with OpenCC, Simplified Chinese by default and English too. Local-first: no cloud, no accounts.",
-    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, warm amber and cream limited color palette, a single small floating microphone hovering above a cozy wooden writing desk in warm lamplight, soft sound waves rippling out and turning into flowing chinese ink brush strokes, a laptop softly glowing, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+    "link": "https://github.com/XinyunZhang5/mini-ci",
+    "note": "A Kubernetes-native CI/CD system built from scratch. A push becomes a PipelineRun custom resource; an operator reads the pipeline file, turns it into a dependency graph, and runs every step as its own Pod, independent steps in parallel. The operator keeps no state, so it survives being killed mid-run. Four parallel jobs finished 2.9x faster than the same four in a chain.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, deep navy blue and cream with a touch of warm orange limited color palette, a tiny harbour dock where a cheerful dockmaster at a wooden ship's wheel directs small cargo containers along conveyor tracks that branch into parallel lanes and merge again before a little crane loads them onto a small ship, orderly and industrious, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty sky space, absolutely no text, no letters, no words, no title, no logo, no signature"
   },
   {
     "id": "game-social",

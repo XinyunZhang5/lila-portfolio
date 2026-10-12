@@ -7,7 +7,7 @@
   <img src="public/covers/nebular-design.jpg" height="150" alt="Nebular" />
   <img src="public/covers/danceflux.jpg" height="150" alt="Danceflux" />
   <img src="public/covers/chatslide.jpg" height="150" alt="ChatSlide" />
-  <img src="public/covers/whisper-helper.jpg" height="150" alt="Whisper Helper" />
+  <img src="public/covers/mini-ci.jpg" height="150" alt="mini-ci" />
   <img src="public/covers/game-social.jpg" height="150" alt="Game Social" />
 </p>
 
@@ -42,7 +42,7 @@ my own machine) — no stock art, no external image API.
 | II | [Nebular](https://github.com/XinyunZhang5/nebular-design) | Turn a photo of a building into buildable LEGO with step-by-step instructions. |
 | III | [Danceflux](https://github.com/XinyunZhang5/danceflux) | Compare your dance take against a reference and get plain-language coaching. On-device pose estimation. |
 | IV | [ChatSlide](https://chatslide.ai) | A RAG pipeline at ChatSlide.ai — structure-aware chunking lifted top-3 retrieval 62% → 81%. |
-| V | [Whisper Helper](https://github.com/XinyunZhang5/whisper-helper) | A free, fully offline voice-input companion for macOS, powered by Whisper.cpp. |
+| V | [mini-ci](https://github.com/XinyunZhang5/mini-ci) | A Kubernetes-native CI/CD system built from scratch: a custom resource, an operator, and one Pod per pipeline step. |
 | VI | Game Social | Backend for a gaming social platform — fanout-on-write feeds and sub-200ms WebSocket chat. |
 
 ## Built with
