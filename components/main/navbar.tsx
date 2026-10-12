@@ -49,7 +49,7 @@ export const Navbar = () => {
       {/* the table of contents, pinned down the left of every page. On a phone
           it slides off-screen and leaves only its tab showing. */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-full w-[240px] flex-col border-r border-[color:var(--hair)] bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] px-7 py-10 backdrop-blur-md transition-transform duration-300 ease-out md:translate-x-0 md:bg-[color-mix(in_srgb,var(--paper)_72%,transparent)] ${
+        className={`fixed left-0 top-0 z-50 flex h-full w-[240px] flex-col border-r border-[color:var(--hair)] bg-[color-mix(in_srgb,var(--paper)_94%,transparent)] backdrop-blur-md transition-transform duration-300 ease-out md:translate-x-0 md:bg-[color-mix(in_srgb,var(--paper)_72%,transparent)] ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -76,89 +76,93 @@ export const Navbar = () => {
           </svg>
         </button>
 
-        <button
-          onClick={() => pick(0)}
-          className="text-left text-[40px] leading-[0.92] text-[color:var(--ink)]"
-          style={{ fontFamily: "var(--font-display)" }}
-          aria-label="Lila Zhang, back to Home"
-        >
-          Lila
-          <br />
-          Zhang
-        </button>
-        <p
-          className="mt-4 text-[12px] italic tracking-[0.02em] text-[color:var(--muted)]"
-          style={{ fontFamily: "var(--font-mono)" }}
-        >
-          Software Engineer &amp; Maker
-        </p>
-
-        <nav className="mt-12 flex flex-col gap-1">
-          {PAGES.map((row, p) => {
-            const active = onBook && page === p;
-            return (
-              <button
-                key={row.key}
-                onClick={() => pick(p)}
-                aria-current={active ? "page" : undefined}
-                className="group flex items-baseline gap-3 py-2 text-left"
-              >
-                <span
-                  className={`text-[16px] uppercase tracking-[0.06em] transition-colors ${
-                    active
-                      ? "text-[color:var(--accent)]"
-                      : "text-[color:var(--ink)] group-hover:text-[color:var(--accent)]"
-                  }`}
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {row.label}
-                </span>
-                <span
-                  aria-hidden
-                  className="mb-[5px] flex-1 self-end border-b border-dotted border-[color:var(--muted)] opacity-60 transition-opacity group-hover:opacity-100"
-                />
-                <span
-                  className={`text-[14px] tracking-[0.1em] transition-colors ${
-                    active
-                      ? "text-[color:var(--accent)]"
-                      : "text-[color:var(--muted)] group-hover:text-[color:var(--accent)]"
-                  }`}
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {row.roman}
-                </span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* colophon */}
-        <div className="mt-auto flex flex-col items-start gap-5">
-          <div className="flex items-center gap-5">
-            {SOCIALS.map(({ link, name, icon: Icon }) => (
-              <Link
-                key={name}
-                href={link}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label={name}
-                className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"
-              >
-                <Icon className="h-[18px] w-[18px]" />
-              </Link>
-            ))}
-          </div>
-          <div className="flex items-center gap-5">
-            <ThemeToggle variant="bare" />
-            <LikeButton />
-          </div>
-          <span
-            className="text-[11px] tracking-[0.22em] text-[color:var(--muted)]"
+        {/* the rail's contents scroll on their own when the window is too
+            short for them; the tab above stays outside so it is never clipped */}
+        <div className="scrollbar-hidden flex h-full flex-col overflow-y-auto px-7 py-10">
+          <button
+            onClick={() => pick(0)}
+            className="text-left text-[40px] leading-[0.92] text-[color:var(--ink)]"
+            style={{ fontFamily: "var(--font-display)" }}
+            aria-label="Lila Zhang, back to Home"
+          >
+            Lila
+            <br />
+            Zhang
+          </button>
+          <p
+            className="mt-4 text-[12px] italic tracking-[0.02em] text-[color:var(--muted)]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            v.&nbsp;<span className="text-[color:var(--ink-soft)]">I</span>
-            &nbsp;&middot;&nbsp;MMXXVI
-          </span>
+            Software Engineer &amp; Maker
+          </p>
+
+          <nav className="mt-12 flex flex-col gap-1">
+            {PAGES.map((row, p) => {
+              const active = onBook && page === p;
+              return (
+                <button
+                  key={row.key}
+                  onClick={() => pick(p)}
+                  aria-current={active ? "page" : undefined}
+                  className="group flex items-baseline gap-3 py-2 text-left"
+                >
+                  <span
+                    className={`text-[16px] uppercase tracking-[0.06em] transition-colors ${
+                      active
+                        ? "text-[color:var(--accent)]"
+                        : "text-[color:var(--ink)] group-hover:text-[color:var(--accent)]"
+                    }`}
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {row.label}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="mb-[5px] flex-1 self-end border-b border-dotted border-[color:var(--muted)] opacity-60 transition-opacity group-hover:opacity-100"
+                  />
+                  <span
+                    className={`text-[14px] tracking-[0.1em] transition-colors ${
+                      active
+                        ? "text-[color:var(--accent)]"
+                        : "text-[color:var(--muted)] group-hover:text-[color:var(--accent)]"
+                    }`}
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {row.roman}
+                  </span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* colophon */}
+          <div className="mt-auto flex flex-col items-start gap-5 pt-12">
+            <div className="flex items-center gap-5">
+              {SOCIALS.map(({ link, name, icon: Icon }) => (
+                <Link
+                  key={name}
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={name}
+                  className="text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent)]"
+                >
+                  <Icon className="h-[18px] w-[18px]" />
+                </Link>
+              ))}
+            </div>
+            <div className="flex items-center gap-5">
+              <ThemeToggle variant="bare" />
+              <LikeButton />
+            </div>
+            <span
+              className="text-[11px] tracking-[0.22em] text-[color:var(--muted)]"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              v.&nbsp;<span className="text-[color:var(--ink-soft)]">I</span>
+              &nbsp;&middot;&nbsp;MMXXVI
+            </span>
+          </div>
         </div>
       </aside>
     </>
