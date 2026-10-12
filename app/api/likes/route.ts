@@ -14,6 +14,17 @@ const TOKEN =
   process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
 const REDIS_URL = process.env.REDIS_URL;
 const SET = "likes";
+
+// The count is private: it is only sent to a request carrying the owner key.
+// Only the key's SHA-256 lives here, so this file can stay in a public repo.
+const OWNER_KEY_SHA256 =
+  "4a335311015acf51ad22daada4aac73b68b13494d92199e36e028c8d750c43c6";
+const isOwner = (req: Request) => {
+  const key = req.headers.get("x-owner-key");
+  return (
+    !!key && createHash("sha256").update(key).digest("hex") === OWNER_KEY_SHA256
+  );
+};
 const SALT = REDIS_URL ?? TOKEN;
 const configured = Boolean(REDIS_URL || (URL_ && TOKEN));
 
@@ -69,7 +80,11 @@ export async function GET(req: Request) {
       ["SCARD", SET],
       ["SISMEMBER", SET, visitor(req)],
     ]);
-    return NextResponse.json({ configured: true, count, liked: liked === 1 });
+    return NextResponse.json({
+      configured: true,
+      liked: liked === 1,
+      ...(isOwner(req) ? { count } : {}),
+    });
   } catch {
     return NextResponse.json({ configured: false }, { status: 502 });
   }
@@ -83,7 +98,11 @@ export async function POST(req: Request) {
       ["SADD", SET, visitor(req)],
       ["SCARD", SET],
     ]);
-    return NextResponse.json({ configured: true, count, liked: true });
+    return NextResponse.json({
+      configured: true,
+      liked: true,
+      ...(isOwner(req) ? { count } : {}),
+    });
   } catch {
     return NextResponse.json({ configured: false }, { status: 502 });
   }

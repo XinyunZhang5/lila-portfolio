@@ -4,12 +4,33 @@ import { useEffect, useState } from "react";
 import { RxHeart, RxHeartFilled } from "react-icons/rx";
 
 const KEY = "book-liked";
+const OWNER_KEY = "book-owner-key";
 
 type Likes = { configured: boolean; count?: number; liked?: boolean };
 
 // One like per visitor, and it can't be taken back. The server counts and
 // de-duplicates (see app/api/likes); localStorage only remembers the filled
 // heart so it shows instantly on the next visit.
+// The running count is the owner's alone: opening the site once with
+// ?owner=<key> saves the key in that browser, and the server only returns a
+// count to requests that carry it.
+// picks up ?owner=<key> (then scrubs it from the address bar) or the saved key
+const ownerHeaders = (): HeadersInit => {
+  try {
+    const url = new URL(window.location.href);
+    const fromUrl = url.searchParams.get("owner");
+    if (fromUrl) {
+      localStorage.setItem(OWNER_KEY, fromUrl);
+      url.searchParams.delete("owner");
+      window.history.replaceState(null, "", url);
+    }
+    const key = localStorage.getItem(OWNER_KEY);
+    return key ? { "x-owner-key": key } : {};
+  } catch {
+    return {};
+  }
+};
+
 export const LikeButton = () => {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState<number | null>(null);
@@ -20,11 +41,11 @@ export const LikeButton = () => {
     } catch {
       /* ignore private-mode storage errors */
     }
-    fetch("/api/likes")
+    fetch("/api/likes", { headers: ownerHeaders() })
       .then((r) => r.json())
       .then((d: Likes) => {
         if (!d.configured) return;
-        setCount(d.count ?? 0);
+        if (typeof d.count === "number") setCount(d.count);
         if (d.liked) setLiked(true);
       })
       .catch(() => {
@@ -41,10 +62,10 @@ export const LikeButton = () => {
     } catch {
       /* ignore private-mode storage errors */
     }
-    fetch("/api/likes", { method: "POST" })
+    fetch("/api/likes", { method: "POST", headers: ownerHeaders() })
       .then((r) => r.json())
       .then((d: Likes) => {
-        if (d.configured) setCount(d.count ?? 0);
+        if (typeof d.count === "number") setCount(d.count);
       })
       .catch(() => {
         /* keep the optimistic count */
@@ -68,7 +89,8 @@ export const LikeButton = () => {
         <Icon className="h-[22px] w-[22px] transition-transform duration-200 group-hover:scale-110" />
       </button>
 
-      {/* the note: a little card that lifts out on hover, focus, or tap */}
+      {/* the note: a little card that lifts out on hover, focus, or tap.
+          The count after it only ever renders for the owner. */}
       <div
         role="tooltip"
         className="pointer-events-none absolute bottom-full left-[-44px] mb-3 w-[188px] translate-y-1 -rotate-2 rounded-[2px] bg-[color:var(--card)] px-3.5 py-3 text-[12.5px] leading-[1.6] text-[color:var(--card-ink)] opacity-0 shadow-[0_14px_30px_rgba(0,0,0,0.3)] transition-all duration-300 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:opacity-100"
