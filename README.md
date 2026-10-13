@@ -9,6 +9,7 @@
   <img src="public/covers/chatslide.jpg" height="150" alt="ChatSlide" />
   <img src="public/covers/mini-ci.jpg" height="150" alt="mini-ci" />
   <img src="public/covers/game-social.jpg" height="150" alt="Game Social" />
+  <img src="public/covers/minilake.jpg" height="150" alt="MiniLake" />
 </p>
 
 <p align="center">
@@ -44,6 +45,7 @@ my own machine) — no stock art, no external image API.
 | IV | [ChatSlide](https://chatslide.ai) | A RAG pipeline at ChatSlide.ai — structure-aware chunking lifted top-3 retrieval 62% → 81%. |
 | V | [mini-ci](https://github.com/XinyunZhang5/mini-ci) | A Kubernetes-native CI/CD system built from scratch: a custom resource, an operator, and one Pod per pipeline step. |
 | VI | Game Social | Backend for a gaming social platform — fanout-on-write feeds and sub-200ms WebSocket chat. |
+| VII | [MiniLake](https://github.com/XinyunZhang5/minilake) | A Delta-Lake-style ACID table format built from scratch: a transaction log with optimistic concurrency, Parquet data skipping, and a Spark connector. |
 
 ## Built with
 

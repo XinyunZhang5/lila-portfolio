@@ -180,6 +180,13 @@ export const FULLSTACK_SKILL = [
 
 export const PROJECTS = [
   {
+    title: "MiniLake",
+    description:
+      "A Delta-Lake-style ACID table format built from scratch: a transaction log with optimistic concurrency control, per-file min/max stats from Parquet footers for data skipping, and a Spark connector with time travel.",
+    image: "/covers/minilake.jpg",
+    link: "https://github.com/XinyunZhang5/minilake",
+  },
+  {
     title: "mini-ci",
     description:
       "A Kubernetes-native CI/CD system built from scratch: a PipelineRun custom resource, a stateless operator, and a DAG scheduler that runs each pipeline step as its own Pod, independent steps in parallel.",
@@ -213,6 +220,11 @@ export const FOOTER_DATA = [
   {
     title: "Projects",
     data: [
+      {
+        name: "MiniLake",
+        icon: RxGithubLogo,
+        link: "https://github.com/XinyunZhang5/minilake",
+      },
       {
         name: "mini-ci",
         icon: RxGithubLogo,

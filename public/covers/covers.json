@@ -99,5 +99,22 @@
     "link": null,
     "note": "Backend services for a gaming social platform. PostgreSQL models bidirectional friendships, requests, activity events, and personalized feeds. Moving from join-heavy reads to fanout-on-write dropped feed latency from 130ms to 90ms, and WebSocket chat and notifications deliver in under 200ms with reconnect recovery.",
     "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, warm coral and cream limited color palette, a friendly old-fashioned switchboard operator connecting many little game character avatars with glowing threads of friendship, small activity notes flying between them, lively and social, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty wall space, absolutely no text, no letters, no words, no title, no logo, no signature"
+  },
+  {
+    "id": "minilake",
+    "title": "ACID Lakehouse",
+    "title_en": "MINILAKE",
+    "date": "OCT. 2026",
+    "issue": "No. 07",
+    "artist": "Lila Zhang",
+    "accent": "#2E7A6E",
+    "stack": [
+      "Java",
+      "Scala",
+      "Spark"
+    ],
+    "link": "https://github.com/XinyunZhang5/minilake",
+    "note": "A Delta-Lake-style table format built from scratch. Every commit is one file in a transaction log, and writers race to create it; the loser checks what the winner changed and retries unless it touched data it had read. Eight threads doing read-modify-write on one table lost no updates. Per-file min/max stats from Parquet footers let Spark skip files: a range query read 1 of 10.",
+    "prompt": "a witty conceptual editorial illustration, vintage flat gouache and watercolor painting, painterly, no border no frame, deep teal green and cream with a touch of warm amber limited color palette, a calm lake with small wooden boats bringing neat stacks of crates to a little boathouse on stilts, where a careful clerk at a lectern writes each delivery as a new numbered line in a huge open ledger book, rows of tidy crates on shelves behind, orderly and quiet, witty conceptual editorial illustration, soft textured shading, portrait composition, leave the top quarter as calm plain empty sky space, absolutely no text, no letters, no words, no title, no logo, no signature"
   }
 ]
