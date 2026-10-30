@@ -29,7 +29,7 @@ export const Prologue = () => {
   return (
     <section
       id="prologue"
-      className="relative mx-auto flex min-h-full max-w-[1100px] flex-col justify-center px-6 pb-24 pt-32 md:px-10"
+      className="relative mx-auto flex max-w-[1100px] flex-col px-6 pb-12 pt-32 md:px-10"
     >
       {/* intro on the left, headshot in the top-right */}
       <div className="flex flex-col gap-10 md:flex-row md:items-start md:gap-12">

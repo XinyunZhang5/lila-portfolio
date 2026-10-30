@@ -67,7 +67,7 @@ export const MoreMe = () => {
           className="text-[15px] tracking-[0.05em] text-[color:var(--accent)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Chapter III
+          Chapter II
         </span>
         <span aria-hidden className="ml-3 inline-block h-px w-10 align-middle bg-[color:var(--accent)]" />
       </div>

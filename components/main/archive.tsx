@@ -142,22 +142,18 @@ export const Archive = () => {
   return (
     <section
       id="projects"
-      className="relative flex min-h-full w-full flex-col lg:flex-row"
+      className="relative mx-auto flex w-full max-w-[1100px] flex-col px-6 pb-28 md:px-10 lg:flex-row"
     >
       {/* ---------- left column ---------- */}
-      <aside className="flex w-full flex-col border-b border-[color:var(--hair)] px-8 py-12 pt-24 lg:w-[clamp(300px,28%,420px)] lg:border-b-0 lg:border-r lg:px-12 lg:py-20">
-        <div>
-          <span
-            className="text-[15px] tracking-[0.05em] text-[color:var(--accent)]"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Chapter II
-          </span>
-          <span aria-hidden className="ml-3 inline-block h-px w-10 align-middle bg-[color:var(--accent)]" />
-        </div>
+      {/* same column and label style as the skills above, so this reads as
+          more of the Home page rather than a new chapter */}
+      <aside className="flex w-full flex-col pt-0 lg:w-[300px] lg:shrink-0 lg:pt-6">
+        <span className="text-[13px] tracking-[0.14em] text-[color:var(--muted)]">
+          Projects
+        </span>
 
         <h2
-          className="mt-4 text-[40px] leading-none tracking-[-0.025em] text-[color:var(--ink)]"
+          className="mt-3 text-[32px] leading-none tracking-[-0.025em] text-[color:var(--ink)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
           The Archive
@@ -165,15 +161,12 @@ export const Archive = () => {
 
         {/* the shelf's own blurb; on wide screens an open issue takes its place */}
         <div className={shown ? "lg:hidden" : ""}>
-          <p className="mt-6 max-w-[32ch] text-[17px] italic leading-relaxed text-[color:var(--ink-soft)]">
-            A shelf of things I wished existed, then built. Every cover was
-            painted for its own story.
+          <p className="mt-5 max-w-[32ch] text-[17px] italic leading-relaxed text-[color:var(--ink-soft)]">
+            A shelf of things I wished existed, then built.
           </p>
 
-          <div className="my-10 h-px w-full bg-[color:var(--hair)]" />
-
           <p
-            className="text-[12px] leading-relaxed text-[color:var(--muted)]"
+            className="mt-6 text-[12px] leading-relaxed text-[color:var(--muted)]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
             {String(covers.length).padStart(2, "0")} ISSUES · 2024-2026
@@ -190,7 +183,7 @@ export const Archive = () => {
       {/* ---------- right canvas ---------- */}
       <div
         ref={canvasRef}
-        className="relative min-h-[70vh] flex-1 overflow-hidden lg:min-h-full"
+        className="relative h-[560px] flex-1 overflow-hidden lg:h-[640px]"
         style={{
           perspective: "2200px",
           perspectiveOrigin: "48% 42%",
@@ -311,10 +304,8 @@ export const Archive = () => {
                     translate3d stack, where the browser's lazy-loading
                     viewport test is unreliable and can stall a cover until
                     something else on the page moves. The pre-built WebP is
-                    ~30KB, and the book pre-warms all six before you get here,
-                    so they are normally already in cache.
-                    `unoptimized` keeps the URL exactly as written, which is
-                    what makes that pre-warm hit. */}
+                    ~30KB, so loading every issue up front is cheap.
+                    `unoptimized` serves that file exactly as written. */}
                 <Image
                   src={coverSrc(c.id)}
                   alt={`${c.title_en} — ${c.title}`}
@@ -333,7 +324,7 @@ export const Archive = () => {
 
       {/* ---------- write-up, stacked layout ---------- */}
       {shown && (
-        <div ref={belowRef} className="px-8 pb-28 pt-2 lg:hidden">
+        <div ref={belowRef} className="pt-2 lg:hidden">
           {detail}
         </div>
       )}

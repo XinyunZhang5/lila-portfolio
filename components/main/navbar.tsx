@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { PAGES, useBook } from "@/components/main/book-context";
+import { CONTENTS, useBook } from "@/components/main/book-context";
 import { ThemeToggle } from "@/components/main/theme-toggle";
 import { SOCIALS } from "@/constants";
 
@@ -14,16 +14,47 @@ export const Navbar = () => {
   const router = useRouter();
   // only matters below md, where the rail is a drawer tucked off the left edge
   const [open, setOpen] = useState(false);
+  // true while the Projects section at the foot of Home fills the view
+  const [inProjects, setInProjects] = useState(false);
 
   const onBook = pathname === "/";
 
   // the book only lives on "/", so from any other route (e.g. /watch) a
   // chapter pick has to navigate home as well as flip to that page
-  const pick = (p: number) => {
+  const pick = (p: number, section?: string) => {
     go(p);
     setOpen(false);
     if (!onBook) router.push("/");
+    // wait for the chapter (or the whole book, coming from /watch) to mount,
+    // then scroll to the section, or back to the top for a plain chapter
+    let tries = 0;
+    const find = () => {
+      const el = section
+        ? document.getElementById(section)
+        : document.getElementById("prologue")?.parentElement;
+      if (el) {
+        if (section) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        else el.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (tries++ < 40) window.setTimeout(find, 50);
+    };
+    // a short head start, so the book's own scroll-to-top on a chapter change
+    // has already run and can't cancel this scroll
+    if (section || p === 0) window.setTimeout(find, 80);
   };
+
+  // light up Projects instead of Home once that section reaches mid-screen
+  useEffect(() => {
+    setInProjects(false);
+    if (!onBook || page !== 0) return;
+    const el = document.getElementById("projects");
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => setInProjects(e.isIntersecting),
+      { rootMargin: "0px 0px -50% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [onBook, page]);
 
   useEffect(() => {
     if (!open) return;
@@ -96,12 +127,16 @@ export const Navbar = () => {
           </p>
 
           <nav className="mt-12 flex flex-col gap-1">
-            {PAGES.map((row, p) => {
-              const active = onBook && page === p;
+            {CONTENTS.map((row) => {
+              const section = "section" in row ? row.section : undefined;
+              const active =
+                onBook &&
+                page === row.page &&
+                (row.page !== 0 || inProjects === Boolean(section));
               return (
                 <button
                   key={row.key}
-                  onClick={() => pick(p)}
+                  onClick={() => pick(row.page, section)}
                   aria-current={active ? "page" : undefined}
                   className="group flex items-baseline gap-3 py-2 text-left"
                 >
@@ -127,7 +162,7 @@ export const Navbar = () => {
                     }`}
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    {row.roman}
+                    {"roman" in row ? row.roman : "\u00a7"}
                   </span>
                 </button>
               );

@@ -12,11 +12,17 @@ import type { PropsWithChildren } from "react";
 
 export type Theme = "night" | "day";
 
-/** the three chapters; the side rail is their table of contents */
+/** the two chapters; projects live at the foot of Home */
 export const PAGES = [
   { key: "home", label: "Home", roman: "I" },
-  { key: "projects", label: "Projects", roman: "II" },
-  { key: "more", label: "More Me", roman: "III" },
+  { key: "more", label: "More Me", roman: "II" },
+] as const;
+
+/** the side rail's table of contents: chapters, plus Projects as a section of Home */
+export const CONTENTS = [
+  { key: "home", label: "Home", page: 0, roman: "I" },
+  { key: "projects", label: "Projects", page: 0, section: "projects" },
+  { key: "more", label: "More Me", page: 1, roman: "II" },
 ] as const;
 
 export const LAST_PAGE = PAGES.length - 1;
