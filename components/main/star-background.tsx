@@ -3,11 +3,11 @@
 import { useEffect, useRef } from "react";
 
 import { useBook } from "@/components/main/book-context";
-import { PAPER_GRADIENT, ParchmentTexture } from "@/components/main/parchment";
+import { PAPER_GRADIENT } from "@/components/main/parchment";
 
 /**
  * The book's backdrop. Night = a hand-built Little Prince sky, slow and
- * twinkling. Day = warm parchment. Both are one fixed layer behind every page.
+ * twinkling. Day = plain white with a drafting grid. Both are one fixed layer behind every page.
  */
 
 // shared so a turning page can paint an opaque sky that matches the backdrop
@@ -174,8 +174,6 @@ export const StarsCanvas = () => {
       style={{ background: isNight ? SKY_GRADIENT : PAPER_GRADIENT }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
-      {/* parchment texture, day only */}
-      {!isNight && <ParchmentTexture />}
     </div>
   );
 };

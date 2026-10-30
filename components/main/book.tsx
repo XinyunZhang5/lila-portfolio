@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 import { Archive } from "@/components/main/archive";
 import { LAST_PAGE, useBook } from "@/components/main/book-context";
 import { MoreMe } from "@/components/main/more-me";
-import { ParchmentTexture } from "@/components/main/parchment";
 import { Prologue } from "@/components/main/prologue";
 import { COVERS, coverSrc } from "@/constants/covers";
 
@@ -58,7 +57,7 @@ const CornerHint = ({ side }: { side: Side }) => (
 );
 
 export const Book = () => {
-  const { page, theme, next, prev } = useBook();
+  const { page, next, prev } = useBook();
 
   const stageRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
@@ -443,7 +442,7 @@ export const Book = () => {
         {pageNode(page)}
       </div>
 
-      {/* the folded corner: the same parchment as the page, read as a fold only
+      {/* the folded corner: the same paper as the page, read as a fold only
           through its shading + cast shadow. Purely visual (no pointer events). */}
       <div
         ref={foldRef}
@@ -455,7 +454,6 @@ export const Book = () => {
           willChange: "clip-path",
         }}
       >
-        {theme === "day" && <ParchmentTexture />}
         <div ref={shadeRef} className="absolute inset-0" />
       </div>
 

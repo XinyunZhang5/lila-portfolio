@@ -42,15 +42,13 @@ export const Prologue = () => {
             >
               Chapter I
             </span>
-            <span className="ml-3 align-middle text-[color:var(--accent)] opacity-50">
-              ✦
-            </span>
+            <span aria-hidden className="ml-3 inline-block h-px w-10 align-middle bg-[color:var(--accent)]" />
           </motion.div>
 
           {/* opening line */}
           <motion.h1
             {...rise}
-            className="max-w-[16ch] text-[44px] leading-[1.06] text-[color:var(--ink)] md:text-[68px]"
+            className="max-w-[16ch] text-[44px] tracking-[-0.03em] leading-[1.06] text-[color:var(--ink)] md:text-[68px]"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Hey there! I&apos;m Lila

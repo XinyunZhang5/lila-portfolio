@@ -153,13 +153,11 @@ export const Archive = () => {
           >
             Chapter II
           </span>
-          <span className="ml-3 align-middle text-[color:var(--accent)] opacity-50">
-            ✦
-          </span>
+          <span aria-hidden className="ml-3 inline-block h-px w-10 align-middle bg-[color:var(--accent)]" />
         </div>
 
         <h2
-          className="mt-4 text-[40px] leading-none text-[color:var(--ink)]"
+          className="mt-4 text-[40px] leading-none tracking-[-0.025em] text-[color:var(--ink)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
           The Archive

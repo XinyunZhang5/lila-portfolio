@@ -69,13 +69,11 @@ export const MoreMe = () => {
         >
           Chapter III
         </span>
-        <span className="ml-3 align-middle text-[color:var(--accent)] opacity-50">
-          ✦
-        </span>
+        <span aria-hidden className="ml-3 inline-block h-px w-10 align-middle bg-[color:var(--accent)]" />
       </div>
 
       <h2
-        className="max-w-[18ch] text-[38px] leading-[1.08] text-[color:var(--ink)] md:text-[56px]"
+        className="max-w-[18ch] text-[38px] tracking-[-0.03em] leading-[1.08] text-[color:var(--ink)] md:text-[56px]"
         style={{ fontFamily: "var(--font-display)" }}
       >
         Off the clock.
@@ -137,7 +135,7 @@ export const MoreMe = () => {
                 ease: [0.16, 1, 0.3, 1],
               }}
               style={{ rotate: reduce ? 0 : v.rotate }}
-              className={`group ${v.offset} rounded-[2px] bg-[color:var(--card)] p-3 pb-4 shadow-[0_22px_50px_rgba(0,0,0,0.35)] transition-transform duration-500 hover:!rotate-0`}
+              className={`group ${v.offset} rounded-[2px] bg-[color:var(--card)] p-3 pb-4 shadow-[0_1px_2px_rgba(11,13,18,0.06),0_12px_32px_rgba(11,13,18,0.12)] ring-1 ring-[color:var(--hair)] transition-transform duration-500 hover:!rotate-0`}
             >
               {v.href ? (
                 <Link

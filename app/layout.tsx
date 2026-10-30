@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Inter, Limelight } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Inter_Tight } from "next/font/google";
 import type { PropsWithChildren } from "react";
 
 import { BookProvider } from "@/components/main/book-context";
@@ -12,10 +12,10 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// display face for the mastheads + chapter titles, mono for editorial captions
-const limelight = Limelight({
+// tight grotesk for the mastheads + chapter titles, mono for captions
+const display = Inter_Tight({
   subsets: ["latin"],
-  weight: "400",
+  weight: "600",
   variable: "--font-display",
 });
 const plexMono = IBM_Plex_Mono({
@@ -25,7 +25,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#e9e4d5",
+  themeColor: "#ffffff",
 };
 
 export const metadata: Metadata = siteConfig;
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         className={cn(
           "overflow-hidden",
           inter.className,
-          limelight.variable,
+          display.variable,
           plexMono.variable
         )}
       >

@@ -6,7 +6,7 @@
 
 /* ---------------------------------------------------------------------------
    Book themes. Every component reads these vars so day + night both work from
-   one set of markup. Night = Little Prince sky. Day = Lynn Fisher cream paper.
+   one set of markup. Night = Little Prince sky. Day = clean office white.
 --------------------------------------------------------------------------- */
 :root,
 [data-theme="night"] {
@@ -27,18 +27,18 @@
 
 [data-theme="day"] {
   color-scheme: light;
-  --paper: #e9e4d5; /* cream paper */
-  --ink: #211d15; /* ink */
-  --ink-soft: #423a2c;
-  --muted: #7a7160;
-  --accent: #9c5a24; /* warm rust / umber (the taxi-orange the user liked) */
-  --accent-strong: #7d4417;
-  --hair: rgba(33, 29, 21, 0.2);
-  --card: #f2ecda;
-  --card-ink: #211d15;
-  --card-muted: #6f6757;
-  --fold-back: #ddd7c6; /* same parchment tone, a touch darker (the page's back) */
-  --fold-shadow: rgba(58, 46, 26, 0.42);
+  --paper: #ffffff; /* office white: no tint, no texture */
+  --ink: #0b0d12; /* near-black, cool */
+  --ink-soft: #2a2f3a;
+  --muted: #6b7280;
+  --accent: #1f3bff; /* one sharp signal colour, cobalt */
+  --accent-strong: #1029d6;
+  --hair: rgba(11, 13, 18, 0.12);
+  --card: #ffffff;
+  --card-ink: #0b0d12;
+  --card-muted: #4b5563;
+  --fold-back: #f1f2f5; /* cool light grey: the page's back */
+  --fold-shadow: rgba(11, 13, 18, 0.28);
 }
 
 body {

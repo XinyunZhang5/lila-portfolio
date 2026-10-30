@@ -80,7 +80,7 @@ export const Navbar = () => {
         <div className="scrollbar-hidden flex h-full flex-col overflow-y-auto px-7 py-10">
           <button
             onClick={() => pick(0)}
-            className="text-left text-[40px] leading-[0.92] text-[color:var(--ink)]"
+            className="text-left text-[40px] leading-[0.92] tracking-[-0.03em] text-[color:var(--ink)]"
             style={{ fontFamily: "var(--font-display)" }}
             aria-label="Lila Zhang, back to Home"
           >
