@@ -123,7 +123,7 @@ export const Navbar = () => {
             className="mt-4 text-[12px] italic tracking-[0.02em] text-[color:var(--muted)]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            Software Engineer &amp; Maker
+            Software Engineer
           </p>
 
           <nav className="mt-12 flex flex-col gap-1">
@@ -184,9 +184,7 @@ export const Navbar = () => {
                   <Icon className="h-[18px] w-[18px]" />
                 </Link>
               ))}
-            </div>
-            <div className="flex items-center gap-5">
-              <ThemeToggle variant="bare" />
+              <ThemeToggle variant="bare" className="[&_svg]:h-[18px] [&_svg]:w-[18px]" />
             </div>
             <span
               className="text-[11px] tracking-[0.22em] text-[color:var(--muted)]"

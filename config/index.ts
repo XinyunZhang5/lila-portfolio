@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const siteConfig: Metadata = {
   title: "Xinyun (Lila) Zhang | Portfolio",
   description:
-    "Math + CS @ UIUC. Aspiring software engineer focused on infra, full-stack, and AI agent architecture. A storybook portfolio of the things I've built.",
+    "Math + CS @ UIUC. Aspiring software engineer focused on infra, full-stack, and AI agent architecture. A portfolio of the things I've built.",
   keywords: [
     "Xinyun Zhang",
     "Lila Zhang",

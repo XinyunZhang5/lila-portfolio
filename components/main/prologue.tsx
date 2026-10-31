@@ -65,7 +65,7 @@ export const Prologue = () => {
             <span aria-hidden className="mx-2.5 opacity-40">
               |
             </span>
-            Software Engineer &amp; Maker
+            Software Engineer
           </motion.p>
 
           <motion.p
@@ -93,15 +93,6 @@ export const Prologue = () => {
               Drop me a line
             </a>
             &mdash;I&apos;d love to chat tech! &#128161;
-          </motion.p>
-
-          <motion.p
-            {...rise}
-            transition={{ ...rise.transition, delay: 0.18 }}
-            className="mt-4 text-[15px] italic text-[color:var(--muted)]"
-          >
-            This site is a little storybook. Make yourself at home, and turn
-            the pages.
           </motion.p>
         </div>
 

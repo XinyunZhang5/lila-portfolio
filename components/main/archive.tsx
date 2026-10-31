@@ -169,8 +169,6 @@ export const Archive = () => {
             className="mt-6 text-[12px] leading-relaxed text-[color:var(--muted)]"
             style={{ fontFamily: "var(--font-mono)" }}
           >
-            {String(covers.length).padStart(2, "0")} ISSUES · 2024-2026
-            <br />
             <span className="opacity-70">
               Hover or slide to browse, tap to open an issue.
             </span>
